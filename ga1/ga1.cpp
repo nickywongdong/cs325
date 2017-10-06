@@ -31,26 +31,21 @@ int main(){
 
 }
 
-/*int compLowest(  ){
 
-
-
-
-}
-
-
-int smallestRec(int c, int k, int n){
-   if(c==k){
-      return n;
+/*int smallestRec(int m, int n, int k, int *offset){   our algorithm in pseudocode
+   int smallest = MAX_UNSIGNED_INT; //just set our smallest to a huge number initially
+   int x;                           //this will select which file to offset
+   if(k==1){
+      return smallest;
    }
    else{
-      for(int i=0; i<m-1; i++){
-	 n=compLowest(m[i][0], m[i-1][0]);	//returns lowerst number of all arrays at that iteration
+      for(int i=0; i<m; i++){
+         if fread(      ) < smallest;
+            smallest = fread(    );
+            x = i;                     //i think 'i' wil select the file
       }
-      smallestRec(c+1, k, n);
-
+      smallestRec(m, n, k-1, offset[x]);     //recursive call
    }
 
-}
-*/
+}*/
 
