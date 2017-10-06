@@ -3,6 +3,7 @@
 #include <math.h>
 #include <fstream>
 #include <sstream>
+#include <limits>
 
 using namespace std;
 
@@ -26,14 +27,23 @@ int main(){
       cout << "Error in opening file...\n";
    }
 
-   cout << m << endl << n << endl << k << endl;
+   //cout << m << endl << n << endl << k << endl;
+
+   //Now create file pointers to .dat files
+
+   for(int i=0; i<m; i++){
+      
+   }
+
+
+
    return 0;
 
 }
 
 
 /*int smallestRec(int m, int n, int k, int *offset){   our algorithm in pseudocode
-   int smallest = MAX_UNSIGNED_INT; //just set our smallest to a huge number initially
+   unsigned int smallest = -1; //just set our smallest to a huge number initially
    int x;                           //this will select which file to offset
    if(k==1){
       return smallest;
