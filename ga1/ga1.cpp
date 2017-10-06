@@ -1,23 +1,37 @@
 #include <iostream>
 #include <cstdlib>
 #include <math.h>
+#include <fstream>
+#include <sstream>
 
+using namespace std;
 
 int main(){
 
+   int m, n, k;      //m: # of files, k: kth smallest num, n: # of elements in each file
    //retrieve input from bin files
+   char temp;
+   ifstream initialFile;
+   initialFile.open("CS325_GA1_TESTS/1/input.txt");   //opens input.txt
 
-   int k = 5, c = 1, n;
-   static int m[2][3] = { { 1, 6, 7 }, { 2, 2, 2 } };
+   if(initialFile.is_open()){
+      initialFile >> m;
+      initialFile >> temp;
+      initialFile >> n;
+      initialFile >> temp;
+      initialFile >> k;
+      initialFile.close();
+   }
+   else{
+      cout << "Error in opening file...\n";
+   }
 
-   cout << smallestRec(c, k, n) << endl;
-
-
+   cout << m << endl << n << endl << k << endl;
    return 0;
 
 }
 
-int compLowest(  ){
+/*int compLowest(  ){
 
 
 
@@ -38,5 +52,5 @@ int smallestRec(int c, int k, int n){
    }
 
 }
-
+*/
 
