@@ -2,38 +2,67 @@
 #include <cstdlib>
 #include <math.h>
 #include <fstream>
+#include <sstream>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
+using namespace std;
 
-int main() {
-    int m, n, k;
-    //read in variables from file
-    ifstream myfile;
-    myfile.open("/CS325_GA1_TESTS/input.txt");
+int FindSmallest(string, int, int*);
 
+int main(){
+  int m, n, k;      //m: # of files, k: kth smallest num, n: # of elements in each file
+  //retrieve input from bin files
+  char temp;
+  ifstream initialFile;
+  initialFile.open("CS325_GA1_TESTS/1/input.txt");   //opens input.txt
 
+  if(initialFile.is_open()){
+     initialFile >> m;
+     initialFile >> temp;
+     initialFile >> n;
+     initialFile >> temp;
+     initialFile >> k;
+     initialFile.close();
+     cout << "m: " << m << endl;
+     cout << "n: " << n << endl;
+     cout << "k: " << k << endl;
+
+  }
+  else{
+     cout << "Error in opening file...\n";
+  }
+
+string filePath = "CS325_GA1_TESTS/1/";
+int offset[m];
+for (int i = 0; i < m; i++){
+  offset[i] = 0;
+}
+int result = FindSmallest(filePath, m, offset);
+  //cout << m << endl << n << endl << k << endl;
 
   return 0;
 }
 
-int FindKth(int offsets[], int m, int k){
-  if (k==1){ //base case: k = 1
-    int x = FindSmallest(offsets, m);
-    int smallest; //= [get x.dat at offset[x] ]
-    return smallest;
-  } else {
-    int x = FindSmallest(offsets, m);
-    offsets[x] += 1;
-    return FindKth(offsets, m, k);
+int FindSmallest(string filePath, int m, int *offset){
+  unsigned int smallest = -1;
+  for (int i = 1; i <= m; i++){
+    //open file i
+    string fileName = filePath + to_string(i) + ".dat";
+    cout << fileName << endl;
+    int bufLen = 20;
+    char buffer[bufLen];
+    ifstream myFile (fileName, ios::in | ios::binary);
+    myFile.read(buffer, bufLen);
+    for (int j = 0; j < bufLen; j++){
+      cout << (unsigned int)buffer[j] << ", ";
+    }
+    cout << endl;
+    //close file i
+    myFile.close();
   }
+  return 0;
 }
 
-int FindSmallest(int offsets[], int m, int k){
-  int min; // = open 1.dat and read entry at offset of offsets[1]
-  for (int i = 1; i <= m; i++){
-    int comp; // = read in i.dat at offset of offsets[i]
-    if (comp < min){
-        min = comp;
-    }
-  }
-  return min;
-}
+//int toInt (char[2], )
