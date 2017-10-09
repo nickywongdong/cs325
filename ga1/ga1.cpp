@@ -4,14 +4,23 @@
 #include <fstream>
 #include <sstream>
 #include <limits>
+#include <string.h>
 
 using namespace std;
+
+
+//int smallestRec(unsigned int, int, int, int, int, ifstream *, int *);
 
 int main(){
 
    int m, n, k;      //m: # of files, k: kth smallest num, n: # of elements in each file
-   //retrieve input from bin files
    char temp;
+
+   /*string path = "CS325_GA1_TESTS/"; 
+   string testDirectory = "1/";           //change this based on which test case to try
+   string input = "input.txt";*/          //doesnt work
+
+   //retrieve input from bin files
    ifstream initialFile;
    initialFile.open("CS325_GA1_TESTS/1/input.txt");   //opens input.txt
 
@@ -30,12 +39,22 @@ int main(){
    //cout << m << endl << n << endl << k << endl;
 
    //Now create file pointers to .dat files
-
+   ifstream *myTests;
+   myTests = new ifstream[m];
    for(int i=0; i<m; i++){
-      
+      myTests[i].open("CS325_GA1_TESTS/1/1.dat", ios::binary | ios::in);     //figure out how to change input file later
+      if(!myTests[i].is_open()){
+         cout << "FAIL: in opening " << i << "st file...";
+      }
    }
 
-
+   //create offset arrays for each m, and initialize vlues to 0;
+   int *offset;
+   offset = new int[m];
+   for(int i=0; i<m; i++){
+      offset[i] = 0;
+   }
+   //smallestRec(smallest, c, m, n, k, myTests, offset);
 
    return 0;
 
@@ -43,19 +62,22 @@ int main(){
 
 
 /*int smallestRec(int m, int n, int k, int *offset){   our algorithm in pseudocode
-   unsigned int smallest = -1; //just set our smallest to a huge number initially
-   int x;                           //this will select which file to offset
-   if(k==1){
-      return smallest;
-   }
-   else{
-      for(int i=0; i<m; i++){
-         if fread(      ) < smallest;
-            smallest = fread(    );
-            x = i;                     //i think 'i' wil select the file
-      }
-      smallestRec(m, n, k-1, offset[x]);     //recursive call
-   }
+   //if n of all .dat files == 1
+      //combine into 1 array, sort, and return kth element
 
+   ///else
+      find largest .dat length (can use offset array) assuming .dat is myFile[][]
+      myFile[i][n/2] is the # to compare  (pretending .dat files are arrays)
+      find position of all other arrays that come close to # (not over) can use binary search
+      count the numbers within that index
+
+      if # of numbers within that index > k
+         remove all #'s to the right
+         recursive call: kthRec()
+      else
+         remove all numbers to the left
+         k = k-   #s removed
+         recursive call kthRec()
+   }
 }*/
 
