@@ -69,6 +69,7 @@ int main(){
 */
 
 int findLongest(ifstream *myFiles, int *beginning, int *end, int m){
+   //"working" length can be calculated with abs(beginning[i] - end[i])
    int max = abs(beginning[0] - end[0]);     //initial max
    int temp;
    int n = 0;
@@ -92,14 +93,12 @@ int findLongest(ifstream *myFiles, int *beginning, int *end, int m){
             int m             - number of total .dat files
     Outputs: total number of values that come close to mid value
 */
-int countNums(ifstream *myFiles, int mid, int *begginning, int *end, int m){
+int countNums(ifstream *myFiles, long mid, int *begginning, int *end, int m){
    int total=0;
+   int index;
+   //use binary search to find all elements up to mid value
    for(int i=0; i<m; i++){
-      for(int j=0; j<n; j++){
-         if (getFromFile(myFiles[i], j) <= mid){
-            total++;
-         }
-      }
+      index = binarySearch(myFile[i], beginning[i], end[i], mid);
    }
 
    return total;
@@ -129,6 +128,38 @@ long getFromFile(ifstream myFile, int x){
   return result;
 }
 
+/*
+    Function "binSearch" finds the index of the element in the .dat file closest
+    (less than or equal to) the number "x" to be searched for
+    Inputs:  fileName - file path and file name of .dat file to be searched
+                    x - number to be searched for
+                start - starting index of the array to be searched
+                  end - ending index of the array to be searched
+    Outputs: index of the closeset (<=) element
+*/
+int binSearch(ifstream myFile, int start, int end, long x){
+  cout << "start: " << start << "   end: " << end << endl;
+  if (start == end){
+    return start;
+  }
+  else {
+    int a = (end - start)/2;
+    long entry = getFromFile(myFile, start+a);
+    cout << "a: " << a << "   start+a: " << start+a << "   entry: " << entry << endl;
+
+    if (entry > x){
+      // binary search the left side
+      return binSearch(myFile, start, start+a, x);
+    }
+    else { // then entry < x
+      // binary search the right side
+      return binSearch(myFile, start+a+1, end, x);
+    }
+  }
+
+}
+
+
 int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
    //if n of all .dat files == 1
       //combine into 1 array, sort, and return kth element
@@ -147,7 +178,8 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
 
       if (nums >= k){
          //remove all #'s to the right
-         //find position of all other arrays that come close to # (not over) can use binary search
+         //find position of all other arrays that come close to # (not over)
+
          //removeLeft();
 
          kthSmallest(m, n, k, beginning, end, myFiles);
