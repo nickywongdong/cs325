@@ -61,14 +61,14 @@ int main(){
 }
 
 /*
-   Function:   will find the working .dat file with the largest offset
+   Function:   will find the working .dat file with the longest working indexes
    Input:      int *beginning - array that keeps index .dat should start
                int *end       - array that keepy index of where .dat should end
                int m          - number of .dat files 
-   Output:     it will return the index of the longest "array" within the file pointers
+   Output:     it will return the index of the longest working .dat file within the file pointers
 */
 
-int findMax(int *beginning, int *end, int m){
+int findLongest(ifstream *myFiles, int *beginning, int *end, int m){
    int max = abs(beginning[0] - end[0]);     //initial max
    int temp;
    int n = 0;
@@ -82,6 +82,28 @@ int findMax(int *beginning, int *end, int m){
    return n;
 }
 
+
+/*
+    Function counts the numbers that come close to given mid index
+    Inputs: ifstream *myFiles - ifstream file pointers to all files
+            int mid           - the value of the number we are searching for in other .dat files
+            int *begginning   - array of offsets that tells us where .dat files should begin
+            int *end          - array of offsets that tells us where .dat files should end
+            int m             - number of total .dat files
+    Outputs: total number of values that come close to mid value
+*/
+int countNums(ifstream *myFiles, int mid, int *begginning, int *end, int m){
+   int total=0;
+   for(int i=0; i<m; i++){
+      for(int j=0; j<n; j++){
+         if (getFromFile(myFiles[i], j) <= mid){
+            total++;
+         }
+      }
+   }
+
+   return total;
+}
 /*
     Function "getFromFile" finds the xth number in the .dat file
     Inputs:  fileName - ifstream file pointer
@@ -107,7 +129,7 @@ long getFromFile(ifstream myFile, int x){
   return result;
 }
 
-/*int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){   our algorithm in pseudocode
+int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
    //if n of all .dat files == 1
       //combine into 1 array, sort, and return kth element
 
@@ -115,16 +137,15 @@ long getFromFile(ifstream myFile, int x){
 
       //find longest "working" .dat length
       longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
-      midIndex = getMid(myFiles, beginning, end);   //retrieve the median index
-      //or abs(beginning[longest] - end[longest]);
-
+      //retrieve the median index
+      midIndex = (abs(beginning[longest] - end[longest]))/2;//store median index into midIndex
 
       mid = getFromFile(myFile[longest], midIndex);          //store median
    
       //have function to count # of numbers that come close to mid
       nums = countNums(myFiles, midIndex, beginning, end, m);
 
-      if (nums >= k)"{
+      if (nums >= k){
          //remove all #'s to the right
          //find position of all other arrays that come close to # (not over) can use binary search
          //removeLeft();
@@ -137,6 +158,5 @@ long getFromFile(ifstream myFile, int x){
          removeRight();
          kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
       }
-   }
-}*/
+}
 
