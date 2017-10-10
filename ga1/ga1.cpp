@@ -8,6 +8,9 @@
 
 using namespace std;
 
+int binSearch(ifstream&, int, int, long);
+int kthSmallest(int , int , int , int *, int *, ifstream *);
+
 
 //int smallestRec(unsigned int, int, int, int, int, ifstream *, int *);
 
@@ -54,7 +57,7 @@ int main(){
       beginning[i] = 0;
       end[i] = 0;
    }
-   //smallestRec(smallest, c, m, n, k, myTests, offset);
+   kthSmallest(m, n, k, beginning, end, myTests);
 
    return 0;
 
@@ -93,13 +96,13 @@ int findLongest(ifstream *myFiles, int *beginning, int *end, int m){
             int m             - number of total .dat files
     Outputs: total number of values that come close to mid value
 */
-int countNums(ifstream *myFiles, long mid, int *begginning, int *end, int m){
+int countNums(ifstream *myFiles, long mid, int *beginning, int *end, int m){
    int total=0;
    int index;
    int n;
    //use binary search to find all elements up to mid value
    for(int i=0; i<m; i++){
-      index = binSearch(myFile[i], beginning[i], end[i], mid);
+      index = binSearch(myFiles[i], beginning[i], end[i], mid);
       n = abs(beginning[i] - index);
       total += n;
    }
@@ -113,7 +116,7 @@ int countNums(ifstream *myFiles, long mid, int *begginning, int *end, int m){
     Outputs: number at xth entry
 */
 
-long getFromFile(ifstream myFile, int x){
+long getFromFile(ifstream &myFile, int x){
   long result = 0;
   int bufLen = 4;
   unsigned int readIn;
@@ -140,7 +143,7 @@ long getFromFile(ifstream myFile, int x){
                   end - ending index of the array to be searched
     Outputs: index of the closeset (<=) element
 */
-int binSearch(ifstream myFile, int start, int end, long x){
+int binSearch(ifstream &myFile, int start, int end, long x){
   cout << "start: " << start << "   end: " << end << endl;
   if (start == end){
     return start;
@@ -164,6 +167,8 @@ int binSearch(ifstream myFile, int start, int end, long x){
 
 
 int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
+   int longest, midIndex, nums;
+   long mid;
    //if n of all .dat files == 1
       //combine into 1 array, sort, and return kth element
 
@@ -174,23 +179,25 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       //retrieve the median index
       midIndex = (abs(beginning[longest] - end[longest]))/2;//store median index into midIndex
 
-      mid = getFromFile(myFile[longest], midIndex);          //store median
+      mid = getFromFile(myFiles[longest], midIndex);          //store median
    
       //have function to count # of numbers that come close to mid
       nums = countNums(myFiles, midIndex, beginning, end, m);
 
       if (nums >= k){
          //remove all #'s to the right
-         //find position of all other arrays that come close to # (not over)
-
-         //removeLeft();
+         for(int i=0; i<m; i++){
+            end[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the end for all .dat files for #'s close to mid
+         }
 
          kthSmallest(m, n, k, beginning, end, myFiles);
       }
       else{
          //remove all numbers to the left including that index.
-         //find position of all other arrays that come close to # (over) can use binary search
-         removeRight();
+         for(int i=0; i<m; i++){
+            beginning[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the beginning for all .dat files for the #'s close to mid
+         }
+
          kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
       }
 }
