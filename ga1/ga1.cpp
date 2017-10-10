@@ -14,23 +14,19 @@ int countNums(ifstream *, long , int *, int *, int );
 long getFromFile(ifstream &, int );
 int binSearch(ifstream&, int, int, long);
 
-
-
-//int smallestRec(unsigned int, int, int, int, int, ifstream *, int *);
+string directory = "2/";    //this tells which directory to test
 
 int main(){
 
    int m, n, k;      //m: # of files, k: kth smallest num, n: # of elements in each file
    char temp;
 
-   /*string path = "CS325_GA1_TESTS/"; 
-   string testDirectory = "1/";           //change this based on which test case to try
-   string input = "input.txt";*/          //doesnt work
-
-   //retrieve input from bin files
+   //open the input.txt file
    ifstream initialFile;
-   initialFile.open("CS325_GA1_TESTS/1/input.txt");   //opens input.txt
+   string path = "CS325_GA1_TESTS/" + directory;
+   initialFile.open(path + "input.txt");   //opens input.txt
 
+   //retrieve .dat information
    if(initialFile.is_open()){
       initialFile >> m;
       initialFile >> temp;
@@ -47,7 +43,7 @@ int main(){
    ifstream *myTests;
    myTests = new ifstream[m];
    for(int i=0; i<m; i++){
-      myTests[i].open("CS325_GA1_TESTS/1/1.dat", ios::binary | ios::in);     //figure out how to change input file later
+      myTests[i].open(path + to_string(i+1) + ".dat", ios::binary | ios::in);     //figure out how to change input file later
       if(!myTests[i].is_open()){
          cout << "FAIL: in opening " << i << "st file...";
       }
