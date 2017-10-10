@@ -36,8 +36,6 @@ int main(){
       cout << "Error in opening file...\n";
    }
 
-   //cout << m << endl << n << endl << k << endl;
-
    //Now create file pointers to .dat files
    ifstream *myTests;
    myTests = new ifstream[m];
@@ -48,11 +46,13 @@ int main(){
       }
    }
 
-   //create offset arrays for each m, and initialize vlues to 0;
-   int *offset;
-   offset = new int[m];
+   //create offset arrays for each m, and initialize values to 0;
+   int *beginning, *end;
+   beginning = new int[m];
+   end = new int[m];
    for(int i=0; i<m; i++){
-      offset[i] = 0;
+      beginning[i] = 0;
+      end[i] = 0;
    }
    //smallestRec(smallest, c, m, n, k, myTests, offset);
 
@@ -60,24 +60,83 @@ int main(){
 
 }
 
+/*
+   Function:   will find the working .dat file with the largest offset
+   Input:      int *beginning - array that keeps index .dat should start
+               int *end       - array that keepy index of where .dat should end
+               int m          - number of .dat files 
+   Output:     it will return the index of the longest "array" within the file pointers
+*/
 
-/*int smallestRec(int m, int n, int k, int *offset){   our algorithm in pseudocode
+int findMax(int *beginning, int *end, int m){
+   int max = abs(beginning[0] - end[0]);     //initial max
+   int temp;
+   int n = 0;
+   for(int i=0; i<m; i++){
+      temp = abs(beginning[i] - end[i]);
+      if (temp > max){
+         max = temp;
+         n=i;
+      }
+   }
+   return n;
+}
+
+/*
+    Function "getFromFile" finds the xth number in the .dat file
+    Inputs:  fileName - file path and file name of input file
+                    x - entry number to retrieve
+    Outputs: number at xth entry
+*/
+
+long getFromFile(string fileName, int x){
+  long result = 0;
+  int bufLen = 4;
+  unsigned int readIn;
+  char buffer[bufLen];
+  ifstream myFile (fileName, ios::in | ios::binary);
+  myFile.seekg(4*x, ios::beg);
+  myFile.read(buffer, bufLen);
+  for (int j = 0; j < bufLen; j++){
+    readIn = (unsigned int)((unsigned char)buffer[j]);
+    //cout << readIn << ", ";
+    result += readIn * pow(16, 3-j);
+  }
+  //cout << endl;
+  myFile.close();
+  return result;
+}
+
+/*int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){   our algorithm in pseudocode
    //if n of all .dat files == 1
       //combine into 1 array, sort, and return kth element
 
    ///else
-      find largest .dat length (can use offset array) assuming .dat is myFile[][]
-      myFile[i][n/2] is the # to compare  (pretending .dat files are arrays)
-      find position of all other arrays that come close to # (not over) can use binary search
-      count the numbers within that index
+   
+      //find longest "working" .dat length
+      longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
+      midIndex = getMid(myFiles, beginning, end);   //retrieve the median index
+      //or abs(beginning[longest] - end[longest]);
 
-      if # of numbers within that index > k
-         remove all #'s to the right
-         recursive call: kthRec()
-      else
-         remove all numbers to the left
-         k = k-   #s removed
-         recursive call kthRec()
+
+      mid = getFromFile(myFile[longest], midIndex);          //store median
+   
+      //have function to count # of numbers that come close to mid
+      nums = countNums(myFiles, midIndex, beginning, end, m);
+
+      if (nums >= k)"{
+         //remove all #'s to the right
+         //find position of all other arrays that come close to # (not over) can use binary search
+         //removeLeft();
+
+         kthSmallest(m, n, k, beginning, end, myFiles);
+      }
+      else{
+         //remove all numbers to the left including that index.
+         //find position of all other arrays that come close to # (over) can use binary search
+         removeRight();
+         kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
+      }
    }
 }*/
 
