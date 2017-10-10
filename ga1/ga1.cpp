@@ -96,9 +96,12 @@ int findLongest(ifstream *myFiles, int *beginning, int *end, int m){
 int countNums(ifstream *myFiles, long mid, int *begginning, int *end, int m){
    int total=0;
    int index;
+   int n;
    //use binary search to find all elements up to mid value
    for(int i=0; i<m; i++){
-      index = binarySearch(myFile[i], beginning[i], end[i], mid);
+      index = binSearch(myFile[i], beginning[i], end[i], mid);
+      n = abs(beginning[i] - index);
+      total += n;
    }
 
    return total;
