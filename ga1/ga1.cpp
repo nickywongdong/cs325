@@ -61,7 +61,29 @@ int main(){
       beginning[i] = 0;
       end[i] = 0;
    }
-   kthSmallest(m, n, k, beginning, end, myTests);
+
+   //begin recursion call
+   int result = kthSmallest(m, n, k, beginning, end, myTests);
+
+
+   //int result = 15;
+
+   //create and dump output result
+   ofstream output;
+   output.open("output.txt");
+   output << result << endl;
+
+   //clean up
+   //close open files
+   output.close();
+   for(int i=0; i<m; i++){
+      myTests[i].close();
+   }
+
+   //free memory
+   //delete [] beginning;
+   //delete [] end;
+   //delete myTests;
 
    return 0;
 
