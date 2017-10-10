@@ -84,17 +84,17 @@ int findMax(int *beginning, int *end, int m){
 
 /*
     Function "getFromFile" finds the xth number in the .dat file
-    Inputs:  fileName - file path and file name of input file
+    Inputs:  fileName - ifstream file pointer
                     x - entry number to retrieve
     Outputs: number at xth entry
 */
 
-long getFromFile(string fileName, int x){
+long getFromFile(ifstream myFile, int x){
   long result = 0;
   int bufLen = 4;
   unsigned int readIn;
   char buffer[bufLen];
-  ifstream myFile (fileName, ios::in | ios::binary);
+  //ifstream myFile (fileName, ios::in | ios::binary);
   myFile.seekg(4*x, ios::beg);
   myFile.read(buffer, bufLen);
   for (int j = 0; j < bufLen; j++){
@@ -112,7 +112,7 @@ long getFromFile(string fileName, int x){
       //combine into 1 array, sort, and return kth element
 
    ///else
-   
+
       //find longest "working" .dat length
       longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
       midIndex = getMid(myFiles, beginning, end);   //retrieve the median index
