@@ -8,25 +8,25 @@
 
 using namespace std;
 
-int binSearch(ifstream&, int, int, long);
 int kthSmallest(int , int , int , int *, int *, ifstream *);
+int findLongest(ifstream *, int *, int *, int );
+int countNums(ifstream *, long , int *, int *, int );
+long getFromFile(ifstream &, int );
+int binSearch(ifstream&, int, int, long);
 
-
-//int smallestRec(unsigned int, int, int, int, int, ifstream *, int *);
+string directory = "2/";    //this tells which directory to test
 
 int main(){
 
    int m, n, k;      //m: # of files, k: kth smallest num, n: # of elements in each file
    char temp;
 
-   /*string path = "CS325_GA1_TESTS/"; 
-   string testDirectory = "1/";           //change this based on which test case to try
-   string input = "input.txt";*/          //doesnt work
-
-   //retrieve input from bin files
+   //open the input.txt file
    ifstream initialFile;
-   initialFile.open("CS325_GA1_TESTS/1/input.txt");   //opens input.txt
+   string path = "CS325_GA1_TESTS/" + directory;
+   initialFile.open(path + "input.txt");   //opens input.txt
 
+   //retrieve .dat information
    if(initialFile.is_open()){
       initialFile >> m;
       initialFile >> temp;
@@ -43,7 +43,7 @@ int main(){
    ifstream *myTests;
    myTests = new ifstream[m];
    for(int i=0; i<m; i++){
-      myTests[i].open("CS325_GA1_TESTS/1/1.dat", ios::binary | ios::in);     //figure out how to change input file later
+      myTests[i].open(path + to_string(i+1) + ".dat", ios::binary | ios::in);     //figure out how to change input file later
       if(!myTests[i].is_open()){
          cout << "FAIL: in opening " << i << "st file...";
       }
@@ -57,10 +57,80 @@ int main(){
       beginning[i] = 0;
       end[i] = 0;
    }
-   kthSmallest(m, n, k, beginning, end, myTests);
+
+   //begin recursion call
+   int result = kthSmallest(m, n, k, beginning, end, myTests);
+
+
+   //int result = 15;
+
+   //create and dump output result
+   ofstream output;
+   output.open("output.txt");
+   output << result << endl;
+
+   //clean up
+   //close open files
+   output.close();
+   for(int i=0; i<m; i++){
+      myTests[i].close();
+   }
+
+   //free memory
+   //delete [] beginning;
+   //delete [] end;
+   //delete myTests;
 
    return 0;
 
+}
+
+
+/*
+    Function counts the numbers that come close to given mid index
+    Inputs: m: # of .dat files
+            n: length of each .dat files
+            k: kth least to search 
+            int *beginning: array of begining offsets
+            int *end: array of end arrays
+            ifstream *myFiles: array of file associations
+    Outputs: total number of values that come close to mid value
+*/
+
+int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
+   int longest, midIndex, nums;
+   long mid;
+   //if n of all .dat files == 1
+      //combine into 1 array, sort, and return kth element
+
+   ///else
+
+      //find longest "working" .dat length
+      longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
+      //retrieve the median index
+      midIndex = (abs(beginning[longest] - end[longest]))/2;//store median index into midIndex
+
+      mid = getFromFile(myFiles[longest], midIndex);          //store median
+   
+      //have function to count # of numbers that come close to mid
+      nums = countNums(myFiles, midIndex, beginning, end, m);
+
+      if (nums >= k){
+         //remove all #'s to the right
+         for(int i=0; i<m; i++){
+            end[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the end for all .dat files for #'s close to mid
+         }
+
+         kthSmallest(m, n, k, beginning, end, myFiles);
+      }
+      else{
+         //remove all numbers to the left including that index.
+         for(int i=0; i<m; i++){
+            beginning[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the beginning for all .dat files for the #'s close to mid
+         }
+
+         kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
+      }
 }
 
 /*
@@ -168,6 +238,7 @@ int binSearch(ifstream &myFile, int start, int end, long x){
 void merge(int arr[], int l, int m, int r)
 {
 
+<<<<<<< HEAD
 	int i, j, k;
 	int n1 = m - l + 1;
 	int n2 = r - m;
@@ -267,3 +338,5 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       }
 }
 
+=======
+>>>>>>> 2eef921ab5f7b07c2c530a9b12bca9346226108c
