@@ -14,7 +14,7 @@ int countNums(ifstream *, long , int *, int *, int );
 long getFromFile(ifstream &, int );
 int binSearch(ifstream&, int, int, long);
 
-string directory = "2/";    //this tells which directory to test
+string directory = "1/";    //this tells which directory to test
 
 int main(){
 
@@ -45,7 +45,7 @@ int main(){
    for(int i=0; i<m; i++){
       myTests[i].open(path + to_string(i+1) + ".dat", ios::binary | ios::in);     //figure out how to change input file later
       if(!myTests[i].is_open()){
-         cout << "FAIL: in opening " << i << "st file...";
+         cout << "FAIL: in opening " << i+1 << ".dat file...";
       }
    }
 
@@ -62,8 +62,6 @@ int main(){
    int result = kthSmallest(m, n, k, beginning, end, myTests);
 
 
-   //int result = 15;
-
    //create and dump output result
    ofstream output;
    output.open("output.txt");
@@ -76,7 +74,7 @@ int main(){
       myTests[i].close();
    }
 
-   //free memory
+   //free memory nevermind not worth
    //delete [] beginning;
    //delete [] end;
    //delete myTests;
