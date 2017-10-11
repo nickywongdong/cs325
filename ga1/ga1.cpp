@@ -96,14 +96,31 @@ int main(){
             ifstream *myFiles: array of file associations
     Outputs: total number of values that come close to mid value
 */
+bool n_length(int m, ifstream *myFiles)
+{
+	int l;
+	for (int i = 0; i < m; i ++)
+	{
+		if (sizeof(myFiles[i]) == 1){
+			l ++;
+		}
+		else{
+			return 1;
+		}
+	
+	}
+	return 0;
 
+
+}
 int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
    int longest, midIndex, nums;
    long mid;
-
+	m = 10;
    int tmp_array[m]; //array that will hold all first values from m arrays
-   if( n <= 1) //if the array size is only 1 or zero, combine into 1 array and sort. 
-   {
+  
+  //if all n's are 1 or zero:
+  {
       for( int i = 0; i < m; i ++)
       {
          tmp_array[i] = getFromFile(myFiles[i], 0);
@@ -111,9 +128,7 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       
    //tmp_array now holds all first values 
    //merge sort:
-     //int p = m/sizeof(tmp_array[0]);
-     mergeSort(tmp_array, 0, m - 1);
-
+     mergeSort(tmp_array, 0, m-1);
   }
   else{
       //find longest "working" .dat length
@@ -280,13 +295,19 @@ void merge(int arr[], int l, int m, int r)
       j++;
    }
    k++;
-}
-while( j < n2)
-{
- arr[k] = R[j];
- j++;
- k++;
-}
+ }
+ while( i < n1)
+ {
+  arr[k] = L[i];
+  i++;
+  k++;
+ }
+ while( j < n2)
+ {
+  arr[k] = R[j];
+  j++;
+  k++;
+ }
 }
 //l = left index and r = right index of sub-array
 void mergeSort(int arr[], int l, int r)
