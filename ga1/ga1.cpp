@@ -57,7 +57,7 @@ int main(){
    end = new int[m];
    for(int i=0; i<m; i++){
       beginning[i] = 0;
-      end[i] = 0;
+      end[i] = n;
    }
 
    //begin recursion call
@@ -111,8 +111,8 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       
    //tmp_array now holds all first values 
    //merge sort:
-     int p = m/sizeof(tmp_array[]);
-     mergeSort(myFiles, 0, m - 1);
+     //int p = m/sizeof(tmp_array[0]);
+     mergeSort(tmp_array, 0, m - 1);
 
   }
   else{
@@ -125,6 +125,9 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
 
       //have function to count # of numbers that come close to mid
       nums = countNums(myFiles, midIndex, beginning, end, m);
+
+      //testing
+      cout << "out of countNums \n";
 
       if (nums >= k){
          //remove all #'s to the right
