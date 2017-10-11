@@ -114,8 +114,6 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
      int p = m/sizeof(myFiles[0]);
      mergeSort(myFiles, 0, m - 1);
 
-
-
   }
   else{
       //find longest "working" .dat length
