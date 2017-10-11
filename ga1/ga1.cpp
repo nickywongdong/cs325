@@ -114,10 +114,12 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
    int tmp_array[m]; //array that will hold all first values from m arrays
    if(findLengths(m, beginning, end)) //if the array size is only 1 or zero, combine into 1 array and sort. 
   //if all n's are 1 or zero:
+      cout << "base case " << endl;
   {
       for( int i = 0; i < m; i ++)
       {
 	 tmp_array[i] = getFromFile(myFiles[i], 0);
+    cout << tmp_array[i] << endl;
       }
 
       //tmp_array now holds all first values 
@@ -252,7 +254,7 @@ start - starting index of the array to be searched
 end - ending index of the array to be searched
 Outputs: index of the closeset (<=) element
 */
-int binSearch(ifstream &myFile, int start, int end, long x){
+int binSearch(ifstream &myFile, int start, int end+1, long x){
    //cout << "start: " << start << "   end: " << end << endl;
    if (start == end){
       return start;

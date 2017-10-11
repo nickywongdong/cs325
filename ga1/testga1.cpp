@@ -16,7 +16,7 @@ int binSearch(ifstream&, int, int, long);
 void merge(int [], int , int , int );
 void mergeSort(int [], int , int );
 
-string directory = "1/";    //this tells which directory to test
+//string directory = "1/";    //this tells which directory to test
 
 int main(){
 
@@ -25,8 +25,8 @@ int main(){
 
    //open the input.txt file
    ifstream initialFile;
-   string path = "CS325_GA1_TESTS/" + directory;
-   initialFile.open(path + "input.txt");   //opens input.txt
+   //string path = "CS325_GA1_TESTS/" + directory;
+   initialFile.open("input.txt");   //opens input.txt
 
    //retrieve .dat information
    if(initialFile.is_open()){
@@ -41,25 +41,15 @@ int main(){
       cout << "Error in opening file...\n";
    }
 
-   //testing
-   cout << m << endl << n << endl << k << endl;
-
    //Now create file pointers to .dat files
    ifstream *myTests;
    myTests = new ifstream[m];
    for(int i=0; i<m; i++){
-      myTests[i].open(path + to_string(i+1) + ".dat", ios::binary | ios::in);     //figure out how to change input file later
+      myTests[i].open(to_string(i+1) + ".dat", ios::binary | ios::in);     //figure out how to change input file later
       if(!myTests[i].is_open()){
 	 cout << "FAIL: in opening " << i+1 << ".dat file...";
       }
    }
-
-   /*//testing
-    for(int i=0; i<m; i++){
-      for(int j=0; j<n; j++){
-         cout << getFromFile(myTests[i], j) << endl;
-      }
-   }*/
 
    //create offset arrays for each m, and initialize values to 0;
    int *beginning, *end;
@@ -128,58 +118,47 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
    {
       for( int i = 0; i < m; i ++)
       {
-	     tmp_array[i] = getFromFile(myFiles[i], 0);
+	     tmp_array[i] = getFromFile(myFiles[i], beginning[i]+1);
+        //cout << "base case " << endl;
+        //cout << tmp_array[i] << endl;
       }
+      return tmp_array[k-2];
 
       //tmp_array now holds all first values 
       //merge sort:
       //int p = m/sizeof(tmp_array[0]);
       mergeSort(tmp_array, 0, m - 1);
 
+
    }
    else{
       //find longest "working" .dat length
       longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
       //retrieve the median index
-      //testing
-      cout << "BEGINNING: " << beginning[0] << endl;
-      cout << "END: " << end[0] << endl;
-      cout << "The Longest index " << longest << endl;
       midIndex = (abs(beginning[longest] - (end[longest])))/2;//store median index into midIndex
 
-      cout << "The midIndex: " << midIndex << endl;
       mid = getFromFile(myFiles[longest], midIndex);          //store median
-      cout << "middle element: " << mid << endl; 
       //have function to count # of numbers that come close to mid
 
       nums = countNums(myFiles, mid, beginning, end, m);
-      cout << "Numbers to the left: " << nums << endl;
 
       //cout << "___BEGINNING: " << beginning[0] << endl;
       //cout << "___END: " << end[0] << endl;
    
       if (nums >= k){
 	 //remove all #'s to the right
-	 cout << "__REMOVING RIGHT Searching for " << mid << endl;
 	 for(int i=0; i<m; i++){
-	    end[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the end for all .dat files for #'s close to mid
-       cout << "TESTING END " << end[i] << endl;
+	    end[i] = binSearch(myFiles[i], beginning[i], end[i]+1, mid)-1;   //set the index of the end for all .dat files for #'s close to mid
     }
-
-     cout << "___BEGINNING: " << beginning[0] << endl;
-      cout << "___END: " << end[0] << endl;
 
 	 return kthSmallest(m, n, k, beginning, end, myFiles);
       }
       else{
-	 cout << "__REMOVING LEFT Searching for " << mid << endl;
 	 //remove all numbers to the left including that index.
 	 for(int i=0; i<m; i++){
-	    beginning[i] = binSearch(myFiles[i], beginning[i], end[i], mid)+1;   //set the index of the beginning for all .dat files for the #'s close to mid
+	    beginning[i] = binSearch(myFiles[i], beginning[i], end[i]+1, mid);   //set the index of the beginning for all .dat files for the #'s close to mid
 	 }
 
-     cout << "___BEGINNING: " << beginning[0] << endl;
-      cout << "___END: " << end[0] << endl;
 	 return kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
       }
    }
@@ -225,7 +204,7 @@ int countNums(ifstream *myFiles, long mid, int *beginning, int *end, int m){
 
    //use binary search to find all elements up to mid value
    for(int i=0; i<m; i++){
-      index = binSearch(myFiles[i], beginning[i], end[i], mid);
+      index = binSearch(myFiles[i], beginning[i], end[i]+1, mid);
       n = abs(beginning[i] - index);
       total += n;
    }
@@ -276,7 +255,10 @@ int binSearch(ifstream &myFile, int start, int end, long x){
       long entry = getFromFile(myFile, start+a);
       //cout << "a: " << a << "   start+a: " << start+a << "   entry: " << entry << endl;
 
-      if (entry > x){
+      //if (entry == x){
+      //   return start+a;
+      //}
+       if (entry > x){
 	 // binary search the left side
 	 return binSearch(myFile, start, start+a, x);
       }
