@@ -232,4 +232,109 @@ int binSearch(ifstream &myFile, int start, int end, long x){
   }
 
 }
+//Regular MergeSort algorithm
+void merge(int arr[], int l, int m, int r)
+{
 
+<<<<<<< HEAD
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
+
+	
+	int L[n1], R[n2];
+
+	for(i = 0; i <n1; i++)
+		L[i] = arr[l + i];
+	for(j = 0; j < n2; j++)
+		R[j] = arr[m + 1 + j];
+	i = 0;
+	j = 0;
+	k = l;
+	
+	while( i < n1 && j < n2)
+	{
+		if (L[i] < = R[j])
+		{
+			arr[k] = L[i];
+			i++;
+		}
+		else
+		{
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+	while( j < n2)
+	{
+		arr[k] = R[j];
+		j++;
+		k++;
+	}
+}
+//l = left index and r = right index of sub-array
+void mergeSort(int arr[], int l, int r)
+{
+	if(l < r)
+	{
+		int m = l+(r-l)/2;
+	
+	mergeSort(arr, l, m);
+	mergeSort(arr, m+1, r);
+	
+	merge(arr, l, m, r);
+	}
+
+}
+
+int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
+   int longest, midIndex, nums;
+   long mid;
+
+	int tmp_array[m];	//array that will hold all first values from m arrays
+	if( n <= 1)	//if the array size is only 1 or zero, combine into 1 array and sort. 
+	{
+		for( int i = 0; i < m; i ++)
+		{
+			tmp_array[i] = getFromFile(myFiles[i], 0);
+		}
+		
+	//tmp_array now holds all first values 
+	//merge sort:
+	int p = m/sizeof(myFiles[0]);
+	mergeSort(myFiles, 0, m - 1);
+
+
+
+	}
+      //find longest "working" .dat length
+      longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
+      //retrieve the median index
+      midIndex = (abs(beginning[longest] - end[longest]))/2;//store median index into midIndex
+
+      mid = getFromFile(myFiles[longest], midIndex);          //store median
+   
+      //have function to count # of numbers that come close to mid
+      nums = countNums(myFiles, midIndex, beginning, end, m);
+
+      if (nums >= k){
+         //remove all #'s to the right
+         for(int i=0; i<m; i++){
+            end[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the end for all .dat files for #'s close to mid
+         }
+
+         kthSmallest(m, n, k, beginning, end, myFiles);
+      }
+      else{
+         //remove all numbers to the left including that index.
+         for(int i=0; i<m; i++){
+            beginning[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the beginning for all .dat files for the #'s close to mid
+         }
+
+         kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
+      }
+}
+
+=======
+>>>>>>> 2eef921ab5f7b07c2c530a9b12bca9346226108c
