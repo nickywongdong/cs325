@@ -96,29 +96,10 @@ int main(){
             ifstream *myFiles: array of file associations
     Outputs: total number of values that come close to mid value
 */
-bool n_length(int m, ifstream *myFiles)
-{
-	int l;
-	for (int i = 0; i < m; i ++)
-	{
-		if (sizeof(myFiles[i]) == 1){
-			l ++;
-		}
-		else{
-			return 1;
-		}
-	
-	}
-	return 0;
-
-
-}
 int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
    int longest, midIndex, nums;
    long mid;
-	m = 10;
    int tmp_array[m]; //array that will hold all first values from m arrays
-  
   //if all n's are 1 or zero:
   {
       for( int i = 0; i < m; i ++)
