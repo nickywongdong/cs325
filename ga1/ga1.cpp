@@ -111,7 +111,7 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       
    //tmp_array now holds all first values 
    //merge sort:
-     int p = m/sizeof(myFiles[0]);
+     int p = m/sizeof(tmp_array[]);
      mergeSort(myFiles, 0, m - 1);
 
 
