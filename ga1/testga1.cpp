@@ -16,7 +16,7 @@ int binSearch(ifstream&, int, int, long);
 void merge(int [], int , int , int );
 void mergeSort(int [], int , int );
 
-string directory = "3/";    //this tells which directory to test
+string directory = "1/";    //this tells which directory to test
 
 int main(){
 
@@ -108,13 +108,14 @@ int *end: array of end arrays
 ifstream *myFiles: array of file associations
 Outputs: total number of values that come close to mid value
 */
+
 int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles){
    int longest, midIndex, nums;
    long mid;
+
    int tmp_array[m]; //array that will hold all first values from m arrays
    if(findLengths(m, beginning, end)) //if the array size is only 1 or zero, combine into 1 array and sort. 
-  //if all n's are 1 or zero:
-  {
+   {
       for( int i = 0; i < m; i ++)
       {
 	 tmp_array[i] = getFromFile(myFiles[i], 0);
@@ -126,12 +127,7 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       mergeSort(tmp_array, 0, m - 1);
 
    }
-   /*else{
-   //tmp_array now holds all first values 
-   //merge sort:
-     mergeSort(tmp_array, 0, m-1);
-  }*/
-  else{
+   else{
       //find longest "working" .dat length
       longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
       //retrieve the median index
@@ -311,19 +307,7 @@ void merge(int arr[], int l, int m, int r)
       j++;
       k++;
    }
- }
- while( i < n1)
- {
-  arr[k] = L[i];
-  i++;
-  k++;
- }
- while( j < n2)
- {
-  arr[k] = R[j];
-  j++;
-  k++;
- }
+}
 //l = left index and r = right index of sub-array
 void mergeSort(int arr[], int l, int r)
 {
