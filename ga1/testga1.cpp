@@ -41,6 +41,9 @@ int main(){
       cout << "Error in opening file...\n";
    }
 
+   //testing
+   cout << m << endl << n << endl << k << endl;
+
    //Now create file pointers to .dat files
    ifstream *myTests;
    myTests = new ifstream[m];
@@ -51,13 +54,20 @@ int main(){
       }
    }
 
+   /*//testing
+    for(int i=0; i<m; i++){
+      for(int j=0; j<n; j++){
+         cout << getFromFile(myTests[i], j) << endl;
+      }
+   }*/
+
    //create offset arrays for each m, and initialize values to 0;
    int *beginning, *end;
    beginning = new int[m];
    end = new int[m];
    for(int i=0; i<m; i++){
       beginning[i] = 0;
-      end[i] = n;
+      end[i] = n-1;
    }
 
    //begin recursion call
@@ -118,7 +128,7 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
    {
       for( int i = 0; i < m; i ++)
       {
-	 tmp_array[i] = getFromFile(myFiles[i], 0);
+	     tmp_array[i] = getFromFile(myFiles[i], 0);
       }
 
       //tmp_array now holds all first values 
@@ -131,9 +141,11 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       //find longest "working" .dat length
       longest = findLongest(myFiles, beginning, end, m);    //store index of which .dat file into longest
       //retrieve the median index
-      
+      //testing
+      cout << "BEGINNING: " << beginning[0] << endl;
+      cout << "END: " << end[0] << endl;
       cout << "The Longest index " << longest << endl;
-      midIndex = (abs(beginning[longest] - end[longest]))/2;//store median index into midIndex
+      midIndex = (abs(beginning[longest] - (end[longest])))/2;//store median index into midIndex
 
       cout << "The midIndex: " << midIndex << endl;
       mid = getFromFile(myFiles[longest], midIndex);          //store median
@@ -143,15 +155,19 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
       nums = countNums(myFiles, mid, beginning, end, m);
       cout << "Numbers to the left: " << nums << endl;
 
-      cout << "___BEGINNING: " << beginning[0] << endl;
-      cout << "___END: " << end[0] << endl;
+      //cout << "___BEGINNING: " << beginning[0] << endl;
+      //cout << "___END: " << end[0] << endl;
    
       if (nums >= k){
 	 //remove all #'s to the right
 	 cout << "__REMOVING RIGHT Searching for " << mid << endl;
 	 for(int i=0; i<m; i++){
-	    end[i] = binSearch(myFiles[i], beginning[i], end[i], mid)-1;   //set the index of the end for all .dat files for #'s close to mid
-	 }
+	    end[i] = binSearch(myFiles[i], beginning[i], end[i], mid);   //set the index of the end for all .dat files for #'s close to mid
+       cout << "TESTING END " << end[i] << endl;
+    }
+
+     cout << "___BEGINNING: " << beginning[0] << endl;
+      cout << "___END: " << end[0] << endl;
 
 	 return kthSmallest(m, n, k, beginning, end, myFiles);
       }
@@ -162,6 +178,8 @@ int kthSmallest(int m, int n, int k, int *beginning, int *end, ifstream *myFiles
 	    beginning[i] = binSearch(myFiles[i], beginning[i], end[i], mid)+1;   //set the index of the beginning for all .dat files for the #'s close to mid
 	 }
 
+     cout << "___BEGINNING: " << beginning[0] << endl;
+      cout << "___END: " << end[0] << endl;
 	 return kthSmallest(m, n, k-nums, beginning, end, myFiles);   //recursive call with k = k - num of nums
       }
    }
