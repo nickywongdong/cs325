@@ -5,6 +5,8 @@
 */
 
 #include "mergeSort.cpp"
+#include <iostream>
+
 
 int main(){
 	double **A = initDynArr(n);
