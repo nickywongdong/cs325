@@ -6,16 +6,61 @@
 
 #include "mergeSort.cpp"
 #include <iostream>
+#include <fstream>
+#include <cmath>
+//#include <cstdint>
+
+using namespace std;
+
+double **initDynArr(int );
+double findMax(double **, int );
 
 
 int main(){
-	double **A = initDynArr(n);
+	int n;
+	char temp;
 
+	//read in data from input.txt
+	ifstream inputFile;
+	inputFile.open("input.txt");
 
+	if(inputFile.is_open()){
+		inputFile >> n;
+		//Create and initialize matrix
+		double **A = initDynArr(n);		//matrix with numbers
+		double **Q = initDynArr(n);		//matrix with path sums
+
+		//retrieve matrix information
+		for(int i=0; i<n; i++){
+			for(int j=0; j<n; j++){
+      			inputFile >> A[i][j];	//store that index
+      			inputFile >> temp;		//disregard comma
+      		}
+    	}
+	}
+	else{
+      cout << "Error in opening file...\n";
+  	}
 
 	return 0;
 }
 
+/*
+*	Function:	readInput
+*	Input:		n: dimensions of matrix that will be stored into variable n in main
+*	Output:		2D dynamically allocated double array with values initialized to NaN
+*/
+/*void readInput(ifstream& inputFile, double **A, int n){
+
+	char temp;
+	//retrieve matrix information
+	for(int i=0; i<n; i++){
+		for(int j=0; j<n; j++){
+      		inputFile >> A[i][j];	//store that index
+      		inputFile >> temp;		//disregard comma
+      	}
+    }
+}*/
 
 /*
 *	Function:	initDynArr
@@ -23,18 +68,18 @@ int main(){
 *	Output:		2D dynamically allocated double array with values initialized to NaN
 */
 double **initDynArr(int n){
-	double **A;
-	*A = new double[n];
+	double **myArray;
+	*myArray = new double[n];
 	for(int i=0; i<n; i++){
-		A[i] = new double[n];
+		myArray[i] = new double[n];
 	}
 
 	for(int i=0; i<n; i++){
 		for(int j=0; j<n; j++){
-			A[i][j] = nan("");
+			myArray[i][j] = nan("");
 		}
 	}
-	return A;
+	return myArray;
 }
 
 /*
@@ -43,17 +88,17 @@ double **initDynArr(int n){
 				n: integer specifying dimensions of 2D array
 *	Output:		Maximum value in 2D array
 */
-double findMax(double **A, int n){
-	double *temp = new int[n];
+double findMax(double **Q, int n){
+	double *temp = new double[n];
 
 	//first sort each row:
 	for(int i=0; i<n; i++){
-		mergeSort(A[i], 0, n - 1);
+		mergeSort(Q[i], 0, n - 1);
 	}
 
 	//now store last column into a temp array:
 	for(int i=0; i<n; i++){
-		temp[i] = A[i][n-1];
+		temp[i] = Q[i][n-1];
 	}
 
 	//now call sort on temp array:
