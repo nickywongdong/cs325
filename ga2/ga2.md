@@ -24,7 +24,7 @@
   * Recursive function that calculates the maximum sum of the inputArray, starting at [row,col] storing the sum of each square in dynArr  
 
 
-### int function "readInput(int* inputArray)"
+### int function "readInput(int* inputArray)" <-- removed this function
 
   * Returns: integer "n", the size of the array. Input array is populated with values from "input.txt" file
   
@@ -36,7 +36,7 @@
     
   * This function reads the values from "input.txt" to the array pointed to by inputArray
   
-### Integer pointer funciton "initializeDynArr(int n)"
+### Integer pointer funciton "initializeDynArr(int n)"  <-- finished
 
  * Returns: a pointer to the dynamic array that is nxn, with NULL as the value in each entry
   
@@ -48,7 +48,7 @@
     
   * This function creates an nxn dynamic array with each entry initialized to NULL, and returns a pointer to it. 
     
-### Integer funciton "findMax(int* dynArr, int n)"
+### Integer funciton "findMax(int* dynArr, int n)"  <-- finished, still testing
 
   *Returns: maximum integer in the dynamic array
   

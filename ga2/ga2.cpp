@@ -18,31 +18,24 @@ double findMax(double **, int );
 
 int main(){
 	int n;
-	char temp;
-
 	double **A, **Q;
 
 	//read in data from input.txt
-
-	cout << "before opening files\n";
 	ifstream inputFile;
 	inputFile.open("input.txt");
 
-	cout << "after opening file\n";
 	if(inputFile.is_open()){
 		inputFile >> n;
-		//Create and initialize matrix
 
-		cout << "initializing array\n";
+		//Create and initialize matrix
 		A = initDynArr(n);		//matrix with numbers
 		Q = initDynArr(n);		//matrix with path sums
-		cout << "after initializing array\n";
 
 		//retrieve matrix information
 		for(int i=0; i<n; i++){
 			for(int j=0; j<n; j++){
-      			inputFile >> A[i][j];	//store that index
-      			inputFile >> temp;		//disregard comma
+				inputFile >> A[i][j];		//store that index
+				inputFile.ignore(1, ',');	//disregard comma
       		}
     	}
 	}
@@ -50,7 +43,7 @@ int main(){
       cout << "Error in opening file...\n";
   	}
 
-  	/*
+  	/* This will print out matrix, can be used for debugging
   	//test the matrix
   	for(int i=0; i<n; i++){
   		for(int j=0; j<n; j++){
@@ -58,25 +51,10 @@ int main(){
   		}
   		cout << endl; 
   	}*/
+
+
 	return 0;
 }
-
-/*
-*	Function:	readInput
-*	Input:		n: dimensions of matrix that will be stored into variable n in main
-*	Output:		2D dynamically allocated double array with values initialized to NaN
-*/
-/*void readInput(ifstream& inputFile, double **A, int n){
-
-	char temp;
-	//retrieve matrix information
-	for(int i=0; i<n; i++){
-		for(int j=0; j<n; j++){
-      		inputFile >> A[i][j];	//store that index
-      		inputFile >> temp;		//disregard comma
-      	}
-    }
-}*/
 
 /*
 *	Function:	initDynArr
