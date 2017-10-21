@@ -12,7 +12,7 @@
 
 using namespace std;
 
-double **initDynArr(int );
+double **initDynArr( int );
 double findMax(double **, int );
 
 
@@ -20,15 +20,23 @@ int main(){
 	int n;
 	char temp;
 
+	double **A, **Q;
+
 	//read in data from input.txt
+
+	cout << "before opening files\n";
 	ifstream inputFile;
 	inputFile.open("input.txt");
 
+	cout << "after opening file\n";
 	if(inputFile.is_open()){
 		inputFile >> n;
 		//Create and initialize matrix
-		double **A = initDynArr(n);		//matrix with numbers
-		double **Q = initDynArr(n);		//matrix with path sums
+
+		cout << "initializing array\n";
+		A = initDynArr(n);		//matrix with numbers
+		Q = initDynArr(n);		//matrix with path sums
+		cout << "after initializing array\n";
 
 		//retrieve matrix information
 		for(int i=0; i<n; i++){
@@ -42,6 +50,14 @@ int main(){
       cout << "Error in opening file...\n";
   	}
 
+  	/*
+  	//test the matrix
+  	for(int i=0; i<n; i++){
+  		for(int j=0; j<n; j++){
+  			cout << A[i][j] << '\t';
+  		}
+  		cout << endl; 
+  	}*/
 	return 0;
 }
 
@@ -67,9 +83,8 @@ int main(){
 *	Input:		n: integer specifying dimensions of 2D array
 *	Output:		2D dynamically allocated double array with values initialized to NaN
 */
-double **initDynArr(int n){
-	double **myArray;
-	*myArray = new double[n];
+double ** initDynArr( int n){
+	double **myArray = new double*[n];
 	for(int i=0; i<n; i++){
 		myArray[i] = new double[n];
 	}
@@ -79,6 +94,7 @@ double **initDynArr(int n){
 			myArray[i][j] = nan("");
 		}
 	}
+
 	return myArray;
 }
 
