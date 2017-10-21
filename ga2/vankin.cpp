@@ -22,7 +22,7 @@ int main(){
 
 	//read in data from input.txt
 	ifstream inputFile;
-	inputFile.open("input.txt");
+	inputFile.open("testCases/1/input.txt");
 
 	if(inputFile.is_open()){
 		inputFile >> n;
