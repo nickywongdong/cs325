@@ -48,7 +48,7 @@
     
   * This function creates an nxn dynamic array with each entry initialized to NULL, and returns a pointer to it. 
     
-### Integer funciton "findMax(int* dynArr, int n)"  <-- finished, still testing
+### Integer funciton "findMax(int* dynArr, int n)"  <-- finished, still testing (works with just input matrix)
 
   *Returns: maximum integer in the dynamic array
   
