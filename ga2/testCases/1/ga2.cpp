@@ -43,15 +43,18 @@ int main(){
       cout << "Error in opening file...\n";
   	}
 
-  	/* This will print out matrix, can be used for debugging
+  	/*//This will print out matrix, can be used for debugging
   	//test the matrix
   	for(int i=0; i<n; i++){
   		for(int j=0; j<n; j++){
   			cout << A[i][j] << '\t';
   		}
   		cout << endl; 
-  	}*/
+  	}
 
+  	//testing findMax:
+  	cout << findMax( A, n ) << endl;
+  	*/
 
 	return 0;
 }
@@ -61,7 +64,7 @@ int main(){
 *	Input:		n: integer specifying dimensions of 2D array
 *	Output:		2D dynamically allocated double array with values initialized to NaN
 */
-double ** initDynArr( int n){
+double ** initDynArr( int n ){
 	double **myArray = new double*[n];
 	for(int i=0; i<n; i++){
 		myArray[i] = new double[n];
@@ -82,7 +85,7 @@ double ** initDynArr( int n){
 				n: integer specifying dimensions of 2D array
 *	Output:		Maximum value in 2D array
 */
-double findMax(double **Q, int n){
+double findMax( double **Q, int n ){
 	double *temp = new double[n];
 
 	//first sort each row:
