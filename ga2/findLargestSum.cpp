@@ -22,16 +22,16 @@ Function "findLargestSum" is a recursive algorithm that finds the maximum sum
     int n:            size of the board (inputArray and dynArr must be this size)
 */
 
-int findLargestSum(int row, int col, int* inputArray, int* dynArr, int n){
+int findLargestSum(int row, int col, int** inputArray, int** dynArr, int n){
   if ((row >= n) || (col >= n)){
     return 0;
   }
-  else if (dynArr[row][col] != NULL){
+  else if (dynArr[row][col] != nan("")){
     return dynArr[row][col];
   }
   else {
-    int x = findLargestSum(row+1, col, inputArray, dynArr);
-    int y = findLargestSum(row, col+1, inputArray, dynArr);
+    int x = findLargestSum(row+1, col, inputArray, dynArr, n);
+    int y = findLargestSum(row, col+1, inputArray, dynArr, n);
     int max;
     if (x>=y){
       max = x + inputArray[row][col];
