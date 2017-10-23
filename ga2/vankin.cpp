@@ -21,9 +21,11 @@ int main(){
 	int n;
 	double **A, **Q;
 
+	//create output file:
+
 	//read in data from input.txt
 	ifstream inputFile;
-	inputFile.open("testCases/1/input.txt");
+	inputFile.open("testCases/3/input.txt");
 
 	if(inputFile.is_open()){
 		inputFile >> n;
@@ -44,22 +46,18 @@ int main(){
       cout << "Error in opening file...\n";
   	}
 
+  	//Recursive solution of populating Q with largest sums
+  	findLargestSum(0, 0, A, Q, n);
 
-  	cout << findLargestSum(0, 0, A, Q, n) << endl;
+  	//Find the maximum in the array Q using findMax:
+  	cout << findMax( Q, n ) << endl;
 
-
-  	/*//This will print out matrix, can be used for debugging
-  	//test the matrix
-  	for(int i=0; i<n; i++){
+  	/*for(int i=0; i<n; i++){
   		for(int j=0; j<n; j++){
-  			cout << A[i][j] << '\t';
+  			cout << Q[i][j] << '\t';
   		}
   		cout << endl; 
-  	}
-
-  	//testing findMax:
-  	cout << findMax( A, n ) << endl;
-  	*/
+  	}*/
 
 
 	return 0;
