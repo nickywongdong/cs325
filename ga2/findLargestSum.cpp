@@ -26,7 +26,7 @@ int findLargestSum(int row, int col, int** inputArray, int** dynArr, int n){
   if ((row >= n) || (col >= n)){
     return 0;
   }
-  else if (dynArr[row][col] != nan("")){
+  else if ( !isnan(dynArr[row][col]) ){
     return dynArr[row][col];
   }
   else {
