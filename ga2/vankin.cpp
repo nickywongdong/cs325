@@ -15,7 +15,7 @@ using namespace std;
 
 double **initDynArr( int );
 double findMax(double **, int );
-double findLargestSum(int , int , double** , double** , int, double );
+double findLargestSum(int , int , double** , double** , int );
 
 
 int main(){
@@ -50,10 +50,10 @@ int main(){
   	}
 
   	//Recursive solution of populating Q with largest sums
-  	cout << findLargestSum(0, 0, A, Q, n, 0) << endl;
+  	findLargestSum(0, 0, A, Q, n);
 
   	//Find the maximum in the array Q using findMax:m
-  	//cout << findMax( Q, n ) << endl;
+  	cout << findMax( Q, n ) << endl;
 
   	//testing purposes, remove when finished
   	/*cout << "A: " << endl;
@@ -101,7 +101,7 @@ Function "findLargestSum" is a recursive algorithm that finds the maximum sum
     int n:            size of the board (inputArray and dynArr must be this size)
 */
 
-double findLargestSum(int row, int col, double** inputArray, double** dynArr, int n, double maxScore){
+double findLargestSum(int row, int col, double** inputArray, double** dynArr, int n){
   if ((row >= n) || (col >= n)){
     return 0;
   }
@@ -109,8 +109,8 @@ double findLargestSum(int row, int col, double** inputArray, double** dynArr, in
     return dynArr[row][col];
   }
   else {
-    double x = findLargestSum(row+1, col, inputArray, dynArr, n, maxScore);
-    double y = findLargestSum(row, col+1, inputArray, dynArr, n, maxScore);
+    double x = findLargestSum(row+1, col, inputArray, dynArr, n);
+    double y = findLargestSum(row, col+1, inputArray, dynArr, n);
     double max;
     if (x>=y){
       max = x + inputArray[row][col];
@@ -118,12 +118,8 @@ double findLargestSum(int row, int col, double** inputArray, double** dynArr, in
       max = y + inputArray[row][col];
     }
     dynArr[row][col] = max;
-    if(max > maxScore){
-    	maxScore = max;
-    }
     return max;
   }
-  return maxScore;
 }
 
 
