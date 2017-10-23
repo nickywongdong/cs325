@@ -22,16 +22,19 @@ int main(){
 	double **A, **Q;
 
 	//create output file:
+	ifstream outputFile;
+	outputFile.open("output.txt");
+
 
 	//read in data from input.txt
 	ifstream inputFile;
-	inputFile.open("testCases/3/input.txt");
+	inputFile.open("testCases/5/input.txt");
 
 	if(inputFile.is_open()){
 		inputFile >> n;
 
 		//Create and initialize matrix
-		A = initDynArr(n);		//matrix with numbers
+		A = initDynArr(n);		//matrix with input numbers
 		Q = initDynArr(n);		//matrix with path sums
 
 		//retrieve matrix information
@@ -46,19 +49,39 @@ int main(){
       cout << "Error in opening file...\n";
   	}
 
+  	//testing
+  	/*cout << "A: \n";
+  	for(int i=0; i<n; i++){
+  		for(int j=0; j<n; j++){
+  			cout << A[i][j] << '\t';
+  		}
+  		cout << endl; 
+  	}*/
+
   	//Recursive solution of populating Q with largest sums
   	findLargestSum(0, 0, A, Q, n);
 
   	//Find the maximum in the array Q using findMax:
   	cout << findMax( Q, n ) << endl;
 
-  	/*for(int i=0; i<n; i++){
+  	/*cout << "Q: " << endl;
+  	for(int i=0; i<n; i++){
   		for(int j=0; j<n; j++){
   			cout << Q[i][j] << '\t';
   		}
   		cout << endl; 
-  	}*/
+  	}
+	*/
 
+  	//clean up
+	inputFile.close();
+	outputFile.close();
+	for(int i=0; i<n; i++){
+		delete[] A[i];
+		delete[] Q[i];
+	}
+	delete[] Q;
+	delete[] A;
 
 	return 0;
 }
@@ -127,6 +150,7 @@ double ** initDynArr( int n ){
 */
 double findMax( double **Q, int n ){
 	double *temp = new double[n];
+	int num;
 
 	//first sort each row:
 	for(int i=0; i<n; i++){
@@ -141,6 +165,11 @@ double findMax( double **Q, int n ){
 	//now call sort on temp array:
 	mergeSort(temp, 0, n-1);
 
+	num = temp[n-1];
+
+	//clean up
+	delete[] temp;
+
 	//Last value in temp should be maximum value in matrix
-	return temp[n-1];
+	return num;
 }
