@@ -1,14 +1,15 @@
 /*
 *	CS325 Fall 2017
 *	Group Assignment 2
-*	
+*	Caitlin Berger
+*	Peter Dorich
+*	Nick Wong
 */
 
 #include "mergeSort.cpp"
 #include <iostream>
 #include <fstream>
 #include <cmath>
-//#include <cstdint>
 
 using namespace std;
 
@@ -24,7 +25,6 @@ int main(){
 	//create output file:
 	ifstream outputFile;
 	outputFile.open("output.txt");
-
 
 	//read in data from input.txt
 	ifstream inputFile;
@@ -46,32 +46,33 @@ int main(){
     	}
 	}
 	else{
-      cout << "Error in opening file...\n";
+      cout << "Error in opening input file...\n";
   	}
-
-  	//testing
-  	/*cout << "A: \n";
-  	for(int i=0; i<n; i++){
-  		for(int j=0; j<n; j++){
-  			cout << A[i][j] << '\t';
-  		}
-  		cout << endl; 
-  	}*/
 
   	//Recursive solution of populating Q with largest sums
   	findLargestSum(0, 0, A, Q, n);
 
-  	//Find the maximum in the array Q using findMax:
+  	//Find the maximum in the array Q using findMax:m
   	cout << findMax( Q, n ) << endl;
 
-  	/*cout << "Q: " << endl;
+  	//testing purposes, remove when finished
+  	/*cout << "A: " << endl;
   	for(int i=0; i<n; i++){
   		for(int j=0; j<n; j++){
-  			cout << Q[i][j] << '\t';
+  			cout << A[i][j] << " ";
   		}
-  		cout << endl; 
+  		cout << endl;
+  	}*/
+
+  	/* uncomment this when finished
+  	//store solution in output.txt
+  	if(outputFile.is_open()){
+  		outputFile >> findMax( Q, n ) << endl;
   	}
-	*/
+  	else{
+  		cout << "Error in opening output file...\n";
+  	}*/
+
 
   	//clean up
 	inputFile.close();
@@ -108,9 +109,9 @@ double findLargestSum(int row, int col, double** inputArray, double** dynArr, in
     return dynArr[row][col];
   }
   else {
-    int x = findLargestSum(row+1, col, inputArray, dynArr, n);
-    int y = findLargestSum(row, col+1, inputArray, dynArr, n);
-    int max;
+    double x = findLargestSum(row+1, col, inputArray, dynArr, n);
+    double y = findLargestSum(row, col+1, inputArray, dynArr, n);
+    double max;
     if (x>=y){
       max = x + inputArray[row][col];
     } else {
