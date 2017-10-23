@@ -14,21 +14,20 @@
 using namespace std;
 
 double **initDynArr( int );
-double findMax(double **, int );
-double findLargestSum(int , int , double** , double** , int );
+double findLargestSum(int , int , double** , double** , int, double &);
 
 
 int main(){
 	int n;
-	double **A, **Q;
+	double **A, **Q, result;
 
 	//create output file:
-	ifstream outputFile;
+	ofstream outputFile;
 	outputFile.open("output.txt");
 
 	//read in data from input.txt
 	ifstream inputFile;
-	inputFile.open("testCases/5/input.txt");
+	inputFile.open("input.txt");
 
 	if(inputFile.is_open()){
 		inputFile >> n;
@@ -50,28 +49,15 @@ int main(){
   	}
 
   	//Recursive solution of populating Q with largest sums
-  	findLargestSum(0, 0, A, Q, n);
+  	findLargestSum(0, 0, A, Q, n, result);
 
-  	//Find the maximum in the array Q using findMax:m
-  	cout << findMax( Q, n ) << endl;
-
-  	//testing purposes, remove when finished
-  	/*cout << "A: " << endl;
-  	for(int i=0; i<n; i++){
-  		for(int j=0; j<n; j++){
-  			cout << A[i][j] << " ";
-  		}
-  		cout << endl;
-  	}*/
-
-  	/* uncomment this when finished
   	//store solution in output.txt
   	if(outputFile.is_open()){
-  		outputFile >> findMax( Q, n ) << endl;
+  		outputFile << result;
   	}
   	else{
   		cout << "Error in opening output file...\n";
-  	}*/
+  	}
 
 
   	//clean up
@@ -101,7 +87,7 @@ Function "findLargestSum" is a recursive algorithm that finds the maximum sum
     int n:            size of the board (inputArray and dynArr must be this size)
 */
 
-double findLargestSum(int row, int col, double** inputArray, double** dynArr, int n){
+double findLargestSum(int row, int col, double** inputArray, double** dynArr, int n, double &result){
   if ((row >= n) || (col >= n)){
     return 0;
   }
@@ -109,13 +95,16 @@ double findLargestSum(int row, int col, double** inputArray, double** dynArr, in
     return dynArr[row][col];
   }
   else {
-    double x = findLargestSum(row+1, col, inputArray, dynArr, n);
-    double y = findLargestSum(row, col+1, inputArray, dynArr, n);
+    double x = findLargestSum(row+1, col, inputArray, dynArr, n, result);
+    double y = findLargestSum(row, col+1, inputArray, dynArr, n, result);
     double max;
     if (x>=y){
       max = x + inputArray[row][col];
     } else {
       max = y + inputArray[row][col];
+    }
+    if(max > result){
+    	result = max;
     }
     dynArr[row][col] = max;
     return max;
@@ -141,36 +130,4 @@ double ** initDynArr( int n ){
 	}
 
 	return myArray;
-}
-
-/*
-*	Function:	findMax
-*	Input:		A: pointer to dynamic 2D array
-				n: integer specifying dimensions of 2D array
-*	Output:		Maximum value in 2D array
-*/
-double findMax( double **Q, int n ){
-	double *temp = new double[n];
-	int num;
-
-	//first sort each row:
-	for(int i=0; i<n; i++){
-		mergeSort(Q[i], 0, n - 1);
-	}
-
-	//now store last column into a temp array:
-	for(int i=0; i<n; i++){
-		temp[i] = Q[i][n-1];
-	}
-
-	//now call sort on temp array:
-	mergeSort(temp, 0, n-1);
-
-	num = temp[n-1];
-
-	//clean up
-	delete[] temp;
-
-	//Last value in temp should be maximum value in matrix
-	return num;
 }
