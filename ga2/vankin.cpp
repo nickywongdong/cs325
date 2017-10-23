@@ -14,7 +14,7 @@ using namespace std;
 
 double **initDynArr( int );
 double findMax(double **, int );
-double findLargestSum(int , int , double** , double** , int )
+double findLargestSum(int , int , double** , double** , int );
 
 
 int main(){
@@ -44,6 +44,10 @@ int main(){
       cout << "Error in opening file...\n";
   	}
 
+
+  	cout << findLargestSum(0, 0, A, Q, n) << endl;
+
+
   	/*//This will print out matrix, can be used for debugging
   	//test the matrix
   	for(int i=0; i<n; i++){
@@ -56,6 +60,7 @@ int main(){
   	//testing findMax:
   	cout << findMax( A, n ) << endl;
   	*/
+
 
 	return 0;
 }
