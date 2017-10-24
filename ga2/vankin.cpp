@@ -6,7 +6,6 @@
 *	Nick Wong
 */
 
-#include "mergeSort.cpp"
 #include <iostream>
 #include <fstream>
 #include <cmath>
