@@ -24,7 +24,8 @@ with slight modifications
 using namespace std;
 
 int findMin(int * );
-int iterMST(int **, int , int **);
+int findSecondMin(int *);
+int iterMST(int **, int , int **, int);
 int minKey(int [], bool []);
 int printMST(int [], int , int **);
 int primMST(int **, int*);
@@ -33,7 +34,7 @@ int ** initDynArr( int  );
 // Number of vertices in the graph
 int V = 0;
 int myIndex = 0;  //i know global ew
-int anotherIndex = 0; //dont shoot me please
+int firstMin = 0; //dont shoot me please
 
 // A utility function to print the constructed MST stored in parent[]
 int printMST(int parent[], int n, int **graph)
@@ -55,6 +56,29 @@ int findMin(int * result){
     if (result[i] < min){
       min = result[i];
       myIndex = i;
+    }
+  }
+  firstMin = min;
+  return min;
+}
+
+//finds the second minimum element in a given array
+int findSecondMin(int * result){
+  int min = INT_MAX; //Largest possible number initially
+  int flag = 0;
+
+  for(int i=0; i<V-1; i++){
+    if (result[i] == firstMin){
+      flag++;
+    }
+    else if (result[i] < min){  //we can only encounter the firstMin once
+      if(flag > 1){
+        continue;
+      }
+      else{
+        min = result[i];
+        myIndex = i;
+      }
     }
   }
   return min;
@@ -96,7 +120,7 @@ int ** initDynArr( int n ){
 
 
 // Function to loop for each edge of MST, remove edge, and run MST algorithm again
-int iterMST(int **parent, int n, int **graph)
+int iterMST(int **parent, int n, int **graph, int condition)
 {
   int weight;
   //array to store possible MST's
@@ -116,7 +140,10 @@ int iterMST(int **parent, int n, int **graph)
     graph[parent[myIndex][i]][i] = weight;
    }
 
-   return findMin(result);  //return the minimum possible
+   if(condition == 1)
+    return findMin(result);  //return the minimum possible
+  else if(condition == 2)
+    return findSecondMin(result); //return the second minimum possible
 }
 
  
@@ -124,7 +151,7 @@ int iterMST(int **parent, int n, int **graph)
 // matrix representation
 int primMST(int **graph, int *parent)
 { 
-     memset(parent, V-1, 0); //set parent to all 0's
+     memset(parent, V, 0); //set parent to all 0's
      //int parent[V]; // Array to store constructed MST
      int key[V];   // Key values used to pick minimum weight edge in cut
      bool mstSet[V];  // To represent set of vertices not yet included in MST
@@ -213,13 +240,13 @@ int main()
 
     // Print the solution
     result1 = primMST(Q, parent[0]);
-    result2 = iterMST(parent, V, Q);
+    result2 = iterMST(parent, V, Q, 1);
 
     for(int i=0; i<V; i++){
       parent[myIndex][i] = parent[0][i];
     }
 
-    result3 = iterMST(parent, V, Q);
+    result3 = iterMST(parent, V, Q, 2);
 
 
 
