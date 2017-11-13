@@ -33,6 +33,20 @@ int ** initDynArr( int  );
 // Number of vertices in the graph
 int V = 0;
 int myIndex = 0;  //i know global ew
+int anotherIndex = 0; //dont shoot me please
+
+// A utility function to print the constructed MST stored in parent[]
+int printMST(int parent[], int n, int **graph)
+{
+  int sum = 0;
+   //printf("Edge   Weight\n");
+   for (int i = 1; i < V; i++){
+      //printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
+      sum+=graph[i][parent[i]];
+   }
+   //printf("MST WEIGHT: %d\n", sum);
+   return sum;
+}
 
 //finds the minimum element in a given array
 int findMin(int * result){
@@ -44,30 +58,6 @@ int findMin(int * result){
     }
   }
   return min;
-}
- 
-// Function to loop for each edge of MST, remove edge, and run MST algorithm again
-int iterMST(int **parent, int n, int **graph)
-{
-  int weight;
-  //array to store possible MST's
-  int *result = new int[V-1];
-   for (int i = 1; i < V; i++){
-      //printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
-
-    //store as temp variable
-    weight = graph[i][parent[myIndex][i]];
-
-    graph[i][parent[myIndex][i]] = 0;  //"remove" this edge
-    graph[parent[myIndex][i]][i] = 0;
-
-    result[i-1] = primMST(graph, parent[i-1]); //run algorithm without that edge, store solution into an array
-    
-    graph[i][parent[myIndex][i]] = weight; //restore edge
-    graph[parent[myIndex][i]][i] = weight;
-   }
-
-   return findMin(result);  //return the minimum possible
 }
 
 // A utility function to find the vertex with minimum key value, from
@@ -83,19 +73,52 @@ int minKey(int key[], bool mstSet[])
  
    return min_index;
 }
- 
-// A utility function to print the constructed MST stored in parent[]
-int printMST(int parent[], int n, int **graph)
-{
-  int sum = 0;
-   //printf("Edge   Weight\n");
-   for (int i = 1; i < V; i++){
-      //printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
-      sum+=graph[i][parent[i]];
-   }
-   //printf("MST WEIGHT: %d\n", sum);
-   return sum;
+
+/*
+* Function: initDynArr
+* Input:    n: integer specifying dimensions of 2D array
+* Output:   2D dynamically allocated int array with values initialized to -1
+*/
+int ** initDynArr( int n ){
+  int **myArray = new int*[n];
+  for(int i=0; i<n; i++){
+    myArray[i] = new int[n];
+  }
+
+  for(int i=0; i<n; i++){
+    for(int j=0; j<n; j++){
+      myArray[i][j] = -1;
+    }
+  }
+
+  return myArray;
 }
+
+
+// Function to loop for each edge of MST, remove edge, and run MST algorithm again
+int iterMST(int **parent, int n, int **graph)
+{
+  int weight;
+  //array to store possible MST's
+  int *result = new int[V-1];
+   for (int i = 1; i < V; i++){
+      
+
+    //store as temp variable
+    weight = graph[i][parent[myIndex][i]];
+
+    graph[i][parent[myIndex][i]] = 0;  //"remove" this edge
+    graph[parent[myIndex][i]][i] = 0;
+
+    result[i-1] = primMST(graph, parent[i]); //run algorithm without that edge, store solution into an array
+    
+    graph[i][parent[myIndex][i]] = weight; //restore edge
+    graph[parent[myIndex][i]][i] = weight;
+   }
+
+   return findMin(result);  //return the minimum possible
+}
+
  
 // Function to construct and print MST for a graph represented using adjacency
 // matrix representation
@@ -139,25 +162,6 @@ int primMST(int **graph, int *parent)
      return printMST(parent, V, graph);
 }
 
-/*
-* Function: initDynArr
-* Input:    n: integer specifying dimensions of 2D array
-* Output:   2D dynamically allocated int array with values initialized to -1
-*/
-int ** initDynArr( int n ){
-  int **myArray = new int*[n];
-  for(int i=0; i<n; i++){
-    myArray[i] = new int[n];
-  }
-
-  for(int i=0; i<n; i++){
-    for(int j=0; j<n; j++){
-      myArray[i][j] = -1;
-    }
-  }
-
-  return myArray;
-}
  
  
 // driver program to test above function
@@ -202,8 +206,8 @@ int main()
     }
 */
 
-    int **parent = new int*[V-1];  // Array to store constructed MST
-    for(int i=0; i<V-1; i++){
+    int **parent = new int*[V];  // Array to store constructed MST's
+    for(int i=0; i<V; i++){
       parent[i] = new int[V];
     }
 
@@ -211,8 +215,10 @@ int main()
     result1 = primMST(Q, parent[0]);
     result2 = iterMST(parent, V, Q);
 
-    //remove first edge from parent to prevent duplicate:
-    
+    for(int i=0; i<V; i++){
+      parent[myIndex][i] = parent[0][i];
+    }
+
     result3 = iterMST(parent, V, Q);
 
 
