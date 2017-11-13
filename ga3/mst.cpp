@@ -16,6 +16,7 @@ with slight modifications
 // The program is for adjacency matrix representation of the graph
  
 #include <stdio.h>
+#include <string.h>
 #include <limits.h>
 #include <iostream>
 #include <fstream>
@@ -109,6 +110,9 @@ void iterMST(int **parent, int n, int **graph, int &result2, int &result3)
    }
 
    findLowestTwo(result, result2, result3);
+
+   //clean up pointer
+   delete[] result;
 }
 
  
@@ -226,9 +230,10 @@ int main()
   inputFile.close();
   outputFile.close();
   for(int i=0; i<V; i++){
+    delete [] parent[i];
     delete[] Q[i];
   }
   delete[] Q;
- 
+  delete[] parent;
   return 0;
 }
