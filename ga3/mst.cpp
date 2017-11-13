@@ -22,7 +22,7 @@ with slight modifications
 
 using namespace std;
 
-int findLowestTwo(int *, int &, int &);
+void findLowestTwo(int *, int &, int &);
 void iterMST(int ** , int, int **, int &, int &);
 int minKey(int [], bool []);
 int printMST(int [], int , int **);
@@ -49,7 +49,7 @@ int printMST(int parent[], int n, int **graph)
 }
 
 //function that will take in an array, and find the lowest two elements
-int findLowestTwo(int *result, int &result2, int &result3){
+void findLowestTwo(int *result, int &result2, int &result3){
   quickSort(result, 0, V-2);
   result2 = result[0];
   result3 = result[1];
@@ -245,7 +245,7 @@ int main()
       for(int j=0; j<V; j++){
         inputFile >> Q[i][j];   //store that index
         inputFile.ignore(1, ','); //disregard comma
-          }
+        }
       }
   }
   else{
