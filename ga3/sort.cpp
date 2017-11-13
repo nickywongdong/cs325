@@ -1,3 +1,8 @@
+/*
+Quicksort implementation source:
+http://www.geeksforgeeks.org/quick-sort/
+*/
+
 /* C implementation QuickSort */
 #include<stdio.h>
  

@@ -24,8 +24,9 @@ with slight modifications
 
 using namespace std;
 
-int findMin(int *, int &);
-int findSecondMin(int *);
+//int findMin(int *, int &);
+//int findSecondMin(int *);
+int findLowestTwo(int *, int &, int &);
 void iterMST(int ** , int, int **, int &, int &);
 int minKey(int [], bool []);
 int printMST(int [], int , int **);
@@ -51,48 +52,17 @@ int printMST(int parent[], int n, int **graph)
    return sum;
 }
 
+//function that will take in an array, and find the lowest two elements
 int findLowestTwo(int *result, int &result2, int &result3){
+  //testing
+  //for(int i=0; i<V-1; i++){
+  //  cout << result[i] << endl;
+  //}
   quickSort(result, 0, V-2);
   result2 = result[0];
   result3 = result[1];
 }
-//finds the minimum element in a given array
-int findMin(int * result , int &result3){
-  int min = INT_MAX; //Largest possible number initially
-  for(int i=0; i<V-1; i++){
-    cout << result[i] << endl;
-    if (result[i] < min){
-      min = result[i];
-      myIndex = i;
-    }
-  }
-  firstMin = min;
-  
-  return min;
-}
 
-//finds the second minimum element in a given array
-int findSecondMin(int * result){
-  int min = INT_MAX; //Largest possible number initially
-  int flag = 0;
-
-  for(int i=0; i<V-1; i++){
-    cout << "SECOND RESULT" << result[i] << endl;
-    if (result[i] == firstMin){
-      flag++;
-    }
-    else if (result[i] < min){  //we can only encounter the firstMin once
-      if(flag > 1){
-        continue;
-      }
-      else{
-        min = result[i];
-        myIndex = i;
-      }
-    }
-  }
-  return min;
-}
 
 // A utility function to find the vertex with minimum key value, from
 // the set of vertices not yet included in MST
@@ -256,9 +226,9 @@ int main()
     //result2 = iterMST(parent, V, Q, 1, result3);
     iterMST(parent, V, Q, result2, result3);
     //store previous MST into parent[0]
-    for(int i=0; i<V; i++){
-      parent[myIndex][i] = parent[0][i];
-    }
+    //for(int i=0; i<V; i++){
+    //  parent[myIndex][i] = parent[0][i];
+    //}
 
     //result3 = iterMST(parent, V, Q, 2);
 

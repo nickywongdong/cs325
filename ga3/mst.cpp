@@ -12,8 +12,6 @@ Implementation of Prim's algorithm sourced from:
 http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
 with slight modifications
 */
-// A C / C++ program for Prim's Minimum Spanning Tree (MST) algorithm. 
-// The program is for adjacency matrix representation of the graph
  
 #include <stdio.h>
 #include <string.h>
