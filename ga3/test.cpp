@@ -33,7 +33,6 @@ int ** initDynArr( int  );
 // Number of vertices in the graph
 int V = 0;
 
-
 //finds the minimum element in a given array
 int findMin(int * result){
   int min = INT_MAX; //Largest possible number initially
@@ -61,6 +60,7 @@ int iterMST(int *parent, int n, int **graph)
     graph[parent[i]][i] = 0;
 
     result[i-1] = primMST(graph, parent); //run algorithm without that edge, store solution into an array
+    
     graph[i][parent[i]] = weight; //restore edge
     graph[parent[i]][i] = weight;
    }
@@ -162,7 +162,7 @@ int ** initDynArr( int n ){
 int main()
 {
 
-  int **Q, result, *parent;
+  int **Q, result1, result2, result3, *parent;
 
   //create output file:
   ofstream outputFile;
@@ -202,13 +202,17 @@ int main()
 
     parent = new int[V];  // Array to store constructed MST
     // Print the solution
-    result = primMST(Q, parent);
-    cout << "second min: " << iterMST(parent, V, Q) << endl;
+    result1 = primMST(Q, parent);
+    result2 = iterMST(parent, V, Q);
+    //result3 = iterMST();
+
 
 
     //store solution in output.txt
     if(outputFile.is_open()){
-      outputFile << result;
+      outputFile << result1;
+      outputFile << "\n";
+      outputFile << result2;
     }
     else{
       cout << "Error in opening output file...\n";
