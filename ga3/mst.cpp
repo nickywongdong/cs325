@@ -1,18 +1,18 @@
 /*
-* CS325 Fall 2017
-* Group Assignment 3
-* Caitlin Berger
-* Peter Dorich
-* Nick Wong
-*/
+ * CS325 Fall 2017
+ * Group Assignment 3
+ * Caitlin Berger
+ * Peter Dorich
+ * Nick Wong
+ */
 
 
 /*
-Implementation of Prim's algorithm sourced from:
+   Implementation of Prim's algorithm sourced from:
 http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
 with slight modifications
 */
- 
+
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
@@ -41,7 +41,7 @@ int V = 0;
 // A utility function to print the constructed MST stored in parent[]
 int printMST(int parent[], int n, int **graph)
 {
-  int sum = 0;
+   int sum = 0;
    for (int i = 1; i < V; i++){
       sum+=graph[i][parent[i]];
    }
@@ -50,9 +50,9 @@ int printMST(int parent[], int n, int **graph)
 
 //function that will take in an array, and find the lowest two elements
 void findLowestTwo(int *result, int &result2, int &result3){
-  quickSort(result, 0, V-2);
-  result2 = result[0];
-  result3 = result[1];
+   quickSort(result, 0, V-2);
+   result2 = result[0];
+   result3 = result[1];
 }
 
 
@@ -62,54 +62,54 @@ int minKey(int key[], bool mstSet[])
 {
    // Initialize min value
    int min = INT_MAX, min_index;
- 
+
    for (int v = 0; v < V; v++)
-     if (mstSet[v] == false && key[v] < min)
-         min = key[v], min_index = v;
- 
+      if (mstSet[v] == false && key[v] < min)
+	 min = key[v], min_index = v;
+
    return min_index;
 }
 
 /*
-* Function: initDynArr
-* Input:    n: integer specifying dimensions of 2D array
-* Output:   2D dynamically allocated int array with values initialized to -1
-*/
+ * Function: initDynArr
+ * Input:    n: integer specifying dimensions of 2D array
+ * Output:   2D dynamically allocated int array with values initialized to -1
+ */
 int ** initDynArr( int n ){
-  int **myArray = new int*[n];
-  for(int i=0; i<n; i++){
-    myArray[i] = new int[n];
-  }
+   int **myArray = new int*[n];
+   for(int i=0; i<n; i++){
+      myArray[i] = new int[n];
+   }
 
-  for(int i=0; i<n; i++){
-    for(int j=0; j<n; j++){
-      myArray[i][j] = -1;
-    }
-  }
+   for(int i=0; i<n; i++){
+      for(int j=0; j<n; j++){
+	 myArray[i][j] = -1;
+      }
+   }
 
-  return myArray;
+   return myArray;
 }
 
 
 // Function to loop for each edge of MST, remove edge, and run MST algorithm again
 void iterMST(int **parent, int n, int **graph, int &result2, int &result3)
 {
-  int weight;
-  //array to store possible MST's
-  int *result = new int[V-1];
+   int weight;
+   //array to store possible MST's
+   int *result = new int[V-1];
    for (int i = 1; i < V; i++){
-      
 
-    //store as temp variable
-    weight = graph[i][parent[0][i]];
 
-    graph[i][parent[0][i]] = 0;  //"remove" this edge
-    graph[parent[0][i]][i] = 0;
+      //store as temp variable
+      weight = graph[i][parent[0][i]];
 
-    result[i-1] = primMST(graph, parent[i]); //run algorithm without that edge, store solution into an array
-    
-    graph[i][parent[0][i]] = weight; //restore edge
-    graph[parent[0][i]][i] = weight;
+      graph[i][parent[0][i]] = 0;  //"remove" this edge
+      graph[parent[0][i]][i] = 0;
+
+      result[i-1] = primMST(graph, parent[i]); //run algorithm without that edge, store solution into an array
+
+      graph[i][parent[0][i]] = weight; //restore edge
+      graph[parent[0][i]][i] = weight;
    }
 
    findLowestTwo(result, result2, result3);
@@ -118,51 +118,51 @@ void iterMST(int **parent, int n, int **graph, int &result2, int &result3)
    delete[] result;
 }
 
- 
+
 // Function to construct and print MST for a graph represented using adjacency
 // matrix representation
 int primMST(int **graph, int *parent)
 { 
-     memset(parent, V, 0); //set parent to all 0's
-     int key[V];   // Key values used to pick minimum weight edge in cut
-     bool mstSet[V];  // To represent set of vertices not yet included in MST
- 
-     // Initialize all keys as INFINITE
-     for (int i = 0; i < V; i++)
-        key[i] = INT_MAX, mstSet[i] = false;
- 
-     // Always include first 1st vertex in MST.
-     key[0] = 0;     // Make key 0 so that this vertex is picked as first vertex
-     parent[0] = -1; // First node is always root of MST 
- 
-     // The MST will have V vertices
-     for (int count = 0; count < V-1; count++)
-     {
-        // Pick the minimum key vertex from the set of vertices
-        // not yet included in MST
-        int u = minKey(key, mstSet);
- 
-        // Add the picked vertex to the MST Set
-        mstSet[u] = true;
- 
-        // Update key value and parent index of the adjacent vertices of
-        // the picked vertex. Consider only those vertices which are not yet
-        // included in MST
-        for (int v = 0; v < V; v++)
- 
-           // graph[u][v] is non zero only for adjacent vertices of m
-           // mstSet[v] is false for vertices not yet included in MST
-           // Update the key only if graph[u][v] is smaller than key[v]
-          if (graph[u][v] && mstSet[v] == false && graph[u][v] <  key[v])
-             parent[v]  = u, key[v] = graph[u][v];
-     }
-     // print the constructed MST
-     return printMST(parent, V, graph);
+   memset(parent, V, 0); //set parent to all 0's
+   int key[V];   // Key values used to pick minimum weight edge in cut
+   bool mstSet[V];  // To represent set of vertices not yet included in MST
+
+   // Initialize all keys as INFINITE
+   for (int i = 0; i < V; i++)
+      key[i] = INT_MAX, mstSet[i] = false;
+
+   // Always include first 1st vertex in MST.
+   key[0] = 0;     // Make key 0 so that this vertex is picked as first vertex
+   parent[0] = -1; // First node is always root of MST 
+
+   // The MST will have V vertices
+   for (int count = 0; count < V-1; count++)
+   {
+      // Pick the minimum key vertex from the set of vertices
+      // not yet included in MST
+      int u = minKey(key, mstSet);
+
+      // Add the picked vertex to the MST Set
+      mstSet[u] = true;
+
+      // Update key value and parent index of the adjacent vertices of
+      // the picked vertex. Consider only those vertices which are not yet
+      // included in MST
+      for (int v = 0; v < V; v++)
+
+	 // graph[u][v] is non zero only for adjacent vertices of m
+	 // mstSet[v] is false for vertices not yet included in MST
+	 // Update the key only if graph[u][v] is smaller than key[v]
+	 if (graph[u][v] && mstSet[v] == false && graph[u][v] <  key[v])
+	    parent[v]  = u, key[v] = graph[u][v];
+   }
+   // print the constructed MST
+   return printMST(parent, V, graph);
 }
 
 
 /*
-Quicksort implementation source:
+   Quicksort implementation source:
 http://www.geeksforgeeks.org/quick-sort/
 */
 
@@ -170,131 +170,129 @@ http://www.geeksforgeeks.org/quick-sort/
 // A utility function to swap two elements
 void swap(int* a, int* b)
 {
-    int t = *a;
-    *a = *b;
-    *b = t;
+   int t = *a;
+   *a = *b;
+   *b = t;
 }
- 
+
 /* This function takes last element as pivot, places
    the pivot element at its correct position in sorted
-    array, and places all smaller (smaller than pivot)
+   array, and places all smaller (smaller than pivot)
    to left of pivot and all greater elements to right
    of pivot */
 int partition (int *arr, int low, int high)
 {
-    int pivot = arr[high];    // pivot
-    int i = (low - 1);  // Index of smaller element
- 
-    for (int j = low; j <= high- 1; j++)
-    {
-        // If current element is smaller than or
-        // equal to pivot
-        if (arr[j] <= pivot)
-        {
-            i++;    // increment index of smaller element
-            swap(&arr[i], &arr[j]);
-        }
-    }
-    swap(&arr[i + 1], &arr[high]);
-    return (i + 1);
-}
- 
-/* The main function that implements QuickSort
- arr[] --> Array to be sorted,
-  low  --> Starting index,
-  high  --> Ending index */
-void quickSort(int *arr, int low, int high)
-{
-    if (low < high)
-    {
-        /* pi is partitioning index, arr[p] is now
-           at right place */
-        int pi = partition(arr, low, high);
- 
-        // Separately sort elements before
-        // partition and after partition
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
+   int pivot = arr[high];    // pivot
+   int i = (low - 1);  // Index of smaller element
+
+   for (int j = low; j <= high- 1; j++)
+   {
+      // If current element is smaller than or
+      // equal to pivot
+      if (arr[j] <= pivot)
+      {
+	 i++;    // increment index of smaller element
+	 swap(&arr[i], &arr[j]);
+      }
+   }
+   swap(&arr[i + 1], &arr[high]);
+   return (i + 1);
 }
 
- 
- 
-// driver program to test above function
+/* The main function that implements QuickSort
+   arr[] --> Array to be sorted,
+   low  --> Starting index,
+   high  --> Ending index */
+void quickSort(int *arr, int low, int high)
+{
+   if (low < high)
+   {
+      /* pi is partitioning index, arr[p] is now
+	 at right place */
+      int pi = partition(arr, low, high);
+
+      // Separately sort elements before
+      // partition and after partition
+      quickSort(arr, low, pi - 1);
+      quickSort(arr, pi + 1, high);
+   }
+}
+
+
 int main()
 {
 
-  int **Q, result1, result2, result3;
+   int **Q, result1, result2, result3;
 
-  //create output file:
-  ofstream outputFile;
-  outputFile.open("output.txt");
+   //create output file:
+   ofstream outputFile;
+   outputFile.open("output.txt");
 
-  //read in data from input.txt
-  ifstream inputFile;
-  inputFile.open("input.txt");
+   //read in data from input.txt
+   ifstream inputFile;
+   inputFile.open("input.txt");
 
-  if(inputFile.is_open()){
-    inputFile >> V;
+   if(inputFile.is_open()){
+      inputFile >> V;
 
-    //Create and initialize matrix
-    Q = initDynArr(V);    //store adjacency matrix
+      //Create and initialize matrix
+      Q = initDynArr(V);    //store adjacency matrix
 
-    //retrieve matrix information
-    for(int i=0; i<V; i++){
-      for(int j=0; j<V; j++){
-        inputFile >> Q[i][j];   //store that index
-        inputFile.ignore(1, ','); //disregard comma
-        }
+      //retrieve matrix information
+      for(int i=0; i<V; i++){
+	 for(int j=0; j<V; j++){
+	    inputFile >> Q[i][j];   //store that index
+	    inputFile.ignore(1, ','); //disregard comma
+	 }
       }
-  }
-  else{
+   }
+   else{
       cout << "Error in opening input file...\n";
-    }
+   }
 
-/*
-//testing adjacency matrix
-    for(int i=0; i<V; i++){
-      for(int j=0; j<V; j++){
-        cout << Q[i][j] << "\t";
-      }
-      cout << endl;
-    }
-*/
+   /*
+   //testing adjacency matrix
+   for(int i=0; i<V; i++){
+   for(int j=0; j<V; j++){
+   cout << Q[i][j] << "\t";
+   }
+   cout << endl;
+   }
+   */
 
-    int **parent = new int*[V];  // Array to store constructed MST's
-    for(int i=0; i<V; i++){
+   int **parent = new int*[V];  // Array to store constructed MST's
+   for(int i=0; i<V; i++){
       parent[i] = new int[V];
-    }
+   }
 
-    //run our algorithm
-    result1 = primMST(Q, parent[0]);
-    //find the next lowest 2
-    iterMST(parent, V, Q, result2, result3);
+   //run our algorithm
+   result1 = primMST(Q, parent[0]);
+   //find the next lowest 2
+   iterMST(parent, V, Q, result2, result3);
 
 
 
-    //store solution in output.txt
-    if(outputFile.is_open()){
+   //store solution in output.txt
+   if(outputFile.is_open()){
       outputFile << result1;
       outputFile << "\n";
       outputFile << result2;
       outputFile << "\n";
       outputFile << result3;
-    }
-    else{
+   }
+   else{
       cout << "Error in opening output file...\n";
-    }
+   }
 
 
-  //clean up
-  inputFile.close();
-  outputFile.close();
-  for(int i=0; i<V; i++){
-    delete [] parent[i];
-    delete[] Q[i];
-  }
-  delete[] Q;
-  delete[] parent;
-  return 0;
+   //clean up
+   inputFile.close();
+   outputFile.close();
+   for(int i=0; i<V; i++){
+      delete [] parent[i];
+      delete[] Q[i];
+   }
+   delete[] Q;
+   delete[] parent;
+   return 0;
 }
