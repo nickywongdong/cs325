@@ -1,7 +1,15 @@
+/*
+* CS325 Fall 2017
+* Group Assignment 3
+* Caitlin Berger
+* Peter Dorich
+* Nick Wong
+*/
+
 
 /*
-Implementation of Boruvka's algorithm sourced from:
-http://www.geeksforgeeks.org/greedy-algorithms-set-9-boruvkas-algorithm/
+Implementation of Prim's algorithm sourced from:
+http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
 with slight modifications
 */
 // A C / C++ program for Prim's Minimum Spanning Tree (MST) algorithm. 
@@ -15,8 +23,50 @@ with slight modifications
 
 using namespace std;
 
+int findMin(int * );
+int iterMST(int *, int , int **);
+int minKey(int [], bool []);
+int printMST(int [], int , int **);
+int primMST(int **, int*);
+int ** initDynArr( int  );
+
 // Number of vertices in the graph
 int V = 0;
+
+
+//finds the minimum element in a given array
+int findMin(int * result){
+  int min = INT_MAX; //Largest possible number initially
+  for(int i=0; i<V-1; i++){
+    if (result[i] < min){
+      min = result[i];
+    }
+  }
+  return min;
+}
+ 
+// Function to loop for each edge of MST, remove edge, and run MST algorithm again
+int iterMST(int *parent, int n, int **graph)
+{
+  int weight;
+  //array to store possible MST's
+  int *result = new int[V-1];
+   for (int i = 1; i < V; i++){
+      //printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
+
+    //store as temp variable
+    weight = graph[i][parent[i]];
+
+    graph[i][parent[i]] = 0;  //"remove" this edge
+    graph[parent[i]][i] = 0;
+
+    result[i-1] = primMST(graph, parent); //run algorithm without that edge, store solution into an array
+    graph[i][parent[i]] = weight; //restore edge
+    graph[parent[i]][i] = weight;
+   }
+
+   return findMin(result);  //return the minimum possible
+}
 
 // A utility function to find the vertex with minimum key value, from
 // the set of vertices not yet included in MST
@@ -36,20 +86,21 @@ int minKey(int key[], bool mstSet[])
 int printMST(int parent[], int n, int **graph)
 {
   int sum = 0;
-   printf("Edge   Weight\n");
+   //printf("Edge   Weight\n");
    for (int i = 1; i < V; i++){
-      printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
+      //printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
       sum+=graph[i][parent[i]];
    }
-   printf("MST WEIGHT: %d\n", sum);
+   //printf("MST WEIGHT: %d\n", sum);
    return sum;
 }
  
 // Function to construct and print MST for a graph represented using adjacency
 // matrix representation
-int primMST(int **graph)
-{
-     int parent[V]; // Array to store constructed MST
+int primMST(int **graph, int *parent)
+{ 
+     memset(parent, V-1, 0); //set parent to all 0's
+     //int parent[V]; // Array to store constructed MST
      int key[V];   // Key values used to pick minimum weight edge in cut
      bool mstSet[V];  // To represent set of vertices not yet included in MST
  
@@ -82,7 +133,6 @@ int primMST(int **graph)
           if (graph[u][v] && mstSet[v] == false && graph[u][v] <  key[v])
              parent[v]  = u, key[v] = graph[u][v];
      }
- 
      // print the constructed MST
      return printMST(parent, V, graph);
 }
@@ -112,7 +162,7 @@ int ** initDynArr( int n ){
 int main()
 {
 
-  int **Q, result;
+  int **Q, result, *parent;
 
   //create output file:
   ofstream outputFile;
@@ -140,6 +190,7 @@ int main()
       cout << "Error in opening input file...\n";
     }
 
+/*
 //testing adjacency matrix
     for(int i=0; i<V; i++){
       for(int j=0; j<V; j++){
@@ -147,10 +198,12 @@ int main()
       }
       cout << endl;
     }
+*/
 
-
+    parent = new int[V];  // Array to store constructed MST
     // Print the solution
-    result = primMST(Q);
+    result = primMST(Q, parent);
+    cout << "second min: " << iterMST(parent, V, Q) << endl;
 
 
     //store solution in output.txt
@@ -170,5 +223,5 @@ int main()
   }
   delete[] Q;
  
-    return 0;
+  return 0;
 }
