@@ -20,12 +20,13 @@ with slight modifications
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include "sort.cpp"
 
 using namespace std;
 
-int findMin(int * );
+int findMin(int *, int &);
 int findSecondMin(int *);
-int iterMST(int **, int , int **, int);
+void iterMST(int ** , int, int **, int &, int &);
 int minKey(int [], bool []);
 int printMST(int [], int , int **);
 int primMST(int **, int*);
@@ -35,6 +36,7 @@ int ** initDynArr( int  );
 int V = 0;
 int myIndex = 0;  //i know global ew
 int firstMin = 0; //dont shoot me please
+int secondMin = 0;
 
 // A utility function to print the constructed MST stored in parent[]
 int printMST(int parent[], int n, int **graph)
@@ -49,16 +51,23 @@ int printMST(int parent[], int n, int **graph)
    return sum;
 }
 
+int findLowestTwo(int *result, int &result2, int &result3){
+  quickSort(result, 0, V-2);
+  result2 = result[0];
+  result3 = result[1];
+}
 //finds the minimum element in a given array
-int findMin(int * result){
+int findMin(int * result , int &result3){
   int min = INT_MAX; //Largest possible number initially
   for(int i=0; i<V-1; i++){
+    cout << result[i] << endl;
     if (result[i] < min){
       min = result[i];
       myIndex = i;
     }
   }
   firstMin = min;
+  
   return min;
 }
 
@@ -68,6 +77,7 @@ int findSecondMin(int * result){
   int flag = 0;
 
   for(int i=0; i<V-1; i++){
+    cout << "SECOND RESULT" << result[i] << endl;
     if (result[i] == firstMin){
       flag++;
     }
@@ -120,7 +130,7 @@ int ** initDynArr( int n ){
 
 
 // Function to loop for each edge of MST, remove edge, and run MST algorithm again
-int iterMST(int **parent, int n, int **graph, int condition)
+void iterMST(int **parent, int n, int **graph, int &result2, int &result3)
 {
   int weight;
   //array to store possible MST's
@@ -140,10 +150,12 @@ int iterMST(int **parent, int n, int **graph, int condition)
     graph[parent[myIndex][i]][i] = weight;
    }
 
-   if(condition == 1)
-    return findMin(result);  //return the minimum possible
-  else if(condition == 2)
-    return findSecondMin(result); //return the second minimum possible
+
+   findLowestTwo(result, result2, result3);
+   //if(condition == 1)
+   //return findMin(result, result3);  //return the minimum possible
+  //else if(condition == 2)
+    //return findSecondMin(result); //return the second minimum possible
 }
 
  
@@ -238,15 +250,17 @@ int main()
       parent[i] = new int[V];
     }
 
+
     // Print the solution
     result1 = primMST(Q, parent[0]);
-    result2 = iterMST(parent, V, Q, 1);
-
+    //result2 = iterMST(parent, V, Q, 1, result3);
+    iterMST(parent, V, Q, result2, result3);
+    //store previous MST into parent[0]
     for(int i=0; i<V; i++){
       parent[myIndex][i] = parent[0][i];
     }
 
-    result3 = iterMST(parent, V, Q, 2);
+    //result3 = iterMST(parent, V, Q, 2);
 
 
 
