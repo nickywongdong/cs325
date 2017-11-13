@@ -24,7 +24,7 @@ with slight modifications
 using namespace std;
 
 int findMin(int * );
-int iterMST(int *, int , int **);
+int iterMST(int **, int , int **);
 int minKey(int [], bool []);
 int printMST(int [], int , int **);
 int primMST(int **, int*);
@@ -32,6 +32,7 @@ int ** initDynArr( int  );
 
 // Number of vertices in the graph
 int V = 0;
+int myIndex = 0;  //i know global ew
 
 //finds the minimum element in a given array
 int findMin(int * result){
@@ -39,13 +40,14 @@ int findMin(int * result){
   for(int i=0; i<V-1; i++){
     if (result[i] < min){
       min = result[i];
+      myIndex = i;
     }
   }
   return min;
 }
  
 // Function to loop for each edge of MST, remove edge, and run MST algorithm again
-int iterMST(int *parent, int n, int **graph)
+int iterMST(int **parent, int n, int **graph)
 {
   int weight;
   //array to store possible MST's
@@ -54,15 +56,15 @@ int iterMST(int *parent, int n, int **graph)
       //printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
 
     //store as temp variable
-    weight = graph[i][parent[i]];
+    weight = graph[i][parent[myIndex][i]];
 
-    graph[i][parent[i]] = 0;  //"remove" this edge
-    graph[parent[i]][i] = 0;
+    graph[i][parent[myIndex][i]] = 0;  //"remove" this edge
+    graph[parent[myIndex][i]][i] = 0;
 
-    result[i-1] = primMST(graph, parent); //run algorithm without that edge, store solution into an array
+    result[i-1] = primMST(graph, parent[i-1]); //run algorithm without that edge, store solution into an array
     
-    graph[i][parent[i]] = weight; //restore edge
-    graph[parent[i]][i] = weight;
+    graph[i][parent[myIndex][i]] = weight; //restore edge
+    graph[parent[myIndex][i]][i] = weight;
    }
 
    return findMin(result);  //return the minimum possible
@@ -162,7 +164,7 @@ int ** initDynArr( int n ){
 int main()
 {
 
-  int **Q, result1, result2, result3, *parent;
+  int **Q, result1, result2, result3;
 
   //create output file:
   ofstream outputFile;
@@ -200,11 +202,18 @@ int main()
     }
 */
 
-    parent = new int[V];  // Array to store constructed MST
+    int **parent = new int*[V-1];  // Array to store constructed MST
+    for(int i=0; i<V-1; i++){
+      parent[i] = new int[V];
+    }
+
     // Print the solution
-    result1 = primMST(Q, parent);
+    result1 = primMST(Q, parent[0]);
     result2 = iterMST(parent, V, Q);
-    //result3 = iterMST();
+
+    //remove first edge from parent to prevent duplicate:
+    
+    result3 = iterMST(parent, V, Q);
 
 
 
@@ -213,6 +222,8 @@ int main()
       outputFile << result1;
       outputFile << "\n";
       outputFile << result2;
+      outputFile << "\n";
+      outputFile << result3;
     }
     else{
       cout << "Error in opening output file...\n";
