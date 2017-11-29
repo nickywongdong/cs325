@@ -123,40 +123,64 @@ else{
     cout << endl;
   }
   */
-	//create array to store pairs
-	int *a = new int[numLights];
-	int *b = new int[numLights];
+  //create array to store pairs
+  int *a = new int[numLights];
+  int *b = new int[numLights];
+  //memset(a, 0, numLights);
+  //memset(b, 0, numLights);
 
-	createSatInput(Q, lightStatus, numLights, a, b);
+
+  //format input table
+  createSatInput(Q, lightStatus, numLights, a, b);
+
+  /*//testing output of a, and b
+  for(i=0; i<numLights; i++){
+    cout << a[i] << '\t';
+  }
+  cout << endl;
+  for(i=0; i<numLights; i++){
+    cout << b[i] << '\t';
+  }
+  cout << endl;
+*/
+  //format data as input for SAT2 black box
+  vector<pair<int, int> > test; 
+  for(i = 0; i < numLights; i++) {
+        test.push_back(make_pair(a[i],b[i]));
+  }
+
+    //put data into SAT2 black box
+    cout << satisfiable(test) << endl;
+    //test.clear();
 
 return 0;
 }
 /*
-	void fuction: createSatInput
-		Inputs:
-			int** switches: (n+1)x3 array that has the numbers of the two switches connected to each switch
-			int* lights: array length n that has the initial status of each light
-			int n: number of light switches
-			int* x and y: arrays of length n*2. These will hold the resulting pairs to pass to cnf2sat
-		Result:
-			Arrays x and y contain the pairs to use as input to cnf2sat
+  void fuction: createSatInput
+    Inputs:
+      int** switches: (n+1)x3 array that has the numbers of the two switches connected to each switch
+      int* lights: array length n that has the initial status of each light
+      int n: number of light switches
+      int* x and y: arrays of length n*2. These will hold the resulting pairs to pass to cnf2sat
+    Result:
+      Arrays x and y contain the pairs to use as input to cnf2sat
 */
 void createSatInput(light* switches, int* lights, int n, int* x, int* y){
-	int a, b;
-	for (int i = 0; i <n; i++){
-		a = switches[i+1].s[1]; // get number of switches for light i
-		b = switches[i+1].s[2];
-		if (lights[i]){ // if light i is initially on (1 or TRUE)
-			x[2*i] = -1*a; // add pair (-a|-b)
-			y[2*i] = -1*b;
-			x[2*i+1] = a; // add pair (a|b)
-			y[2*i+1] = b;
-		}
-		else { //otherwise, i is initially off (0 or FALSE)
-			x[2*i] = a; // add pair (a|-b)
-			y[2*i] = -1*b;
-			x[2*i+1] = -1*a; // add pair (-a|b)
-			y[2*i+1] = b;
-		}
-	}
+  int a, b;
+  for (int i = 0; i <n; i++){
+    a = switches[i+1].s[1]; // get number of switches for light i
+    b = switches[i+1].s[2];
+    if (lights[i]){ // if light i is initially on (1 or TRUE)
+      x[2*i] = -1*a; // add pair (-a|-b)
+      y[2*i] = -1*b;
+      x[2*i+1] = a; // add pair (a|b)
+      y[2*i+1] = b;
+    }
+    else { //otherwise, i is initially off (0 or FALSE)
+      x[2*i] = a; // add pair (a|-b)
+      y[2*i] = -1*b;
+      x[2*i+1] = -1*a; // add pair (-a|b)
+      y[2*i+1] = b;
+    }
+  }
 }
