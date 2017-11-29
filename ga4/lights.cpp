@@ -124,8 +124,8 @@ else{
   }
   */
   //create array to store pairs
-  int *a = new int[numLights];
-  int *b = new int[numLights];
+  int *a = new int[numLights * 2];
+  int *b = new int[numLights * 2];
   //memset(a, 0, numLights);
   //memset(b, 0, numLights);
 
@@ -133,19 +133,19 @@ else{
   //format input table
   createSatInput(Q, lightStatus, numLights, a, b);
 
-  /*//testing output of a, and b
-  for(i=0; i<numLights; i++){
+  //testing output of a, and b
+  /*for(i=0; i<numLights*2; i++){
     cout << a[i] << '\t';
   }
   cout << endl;
-  for(i=0; i<numLights; i++){
+  for(i=0; i<numLights*2; i++){
     cout << b[i] << '\t';
   }
   cout << endl;
 */
   //format data as input for SAT2 black box
   vector<pair<int, int> > test; 
-  for(i = 0; i < numLights; i++) {
+  for(i = 0; i < numLights*2; i++) {
         test.push_back(make_pair(a[i],b[i]));
   }
 
@@ -158,9 +158,9 @@ return 0;
 /*
   void fuction: createSatInput
     Inputs:
-      int** switches: (n+1)x3 array that has the numbers of the two switches connected to each switch
+      light* switches: (n+1)x3 array that has the numbers of the two switches connected to each switch
       int* lights: array length n that has the initial status of each light
-      int n: number of light switches
+      int n: number of lights
       int* x and y: arrays of length n*2. These will hold the resulting pairs to pass to cnf2sat
     Result:
       Arrays x and y contain the pairs to use as input to cnf2sat
