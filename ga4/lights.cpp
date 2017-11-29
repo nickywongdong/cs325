@@ -19,16 +19,14 @@ struct light {
 } ;
 
 
-void createSatInput(int**, int*, int, int*, int*);
-
-
+void createSatInput(light*, int*, int, int*, int*);
 light * initDynArr( int  );
 
 
 /*
  * Function: initDynArr
- * Input:    n: integer specifying dimensions of 2D array
- * Output:   2D dynamically allocated int array with values initialized to -1
+ * Input:    n: integer specifying dimensions of array
+ * Output:   dynamically allocated array of light structs with s values initialized to -1
  */
 light * initDynArr( int n ){
   //array of pointers corresponding to the number of lights (we add 1 because we want to start at index 1, not 0)
@@ -37,6 +35,7 @@ light * initDynArr( int n ){
       myArray[i].s = new int[2 + 1];  //each pointer (light), has an array of switches (2), we add 1 because we start at index 1, not 0
   }
 
+  //initialize values
   for(int i=0; i<n+1; i++){
     for(int j=0; j<2+1; j++){
       myArray[i].s[j] = -1;
@@ -50,8 +49,7 @@ light * initDynArr( int n ){
 int main(){
 
   int i, j;
-  int *lightStatus, numSwitches, numLights, tempInt;
-  char temp;
+  int *lightStatus, numSwitches, numLights;
   light *Q;
   string buffer;
 
@@ -117,16 +115,19 @@ else{
 
 
    
-   //testing adjacency matrix
+   /*//testing adjacency matrix
    for(i=1; i<2+1; i++){
     for(j=1; j<numLights+1; j++){
       cout << Q[j].s[i] << "\t";
     }
     cout << endl;
   }
-  
-   
+  */
+	//create array to store pairs
+	int *a = new int[numLights];
+	int *b = new int[numLights];
 
+	createSatInput(Q, lightStatus, numLights, a, b);
 
 return 0;
 }
@@ -140,11 +141,11 @@ return 0;
 		Result:
 			Arrays x and y contain the pairs to use as input to cnf2sat
 */
-void createSatInput(int** switches, int* lights, int n, int* x, int* y){
+void createSatInput(light* switches, int* lights, int n, int* x, int* y){
 	int a, b;
 	for (int i = 0; i <n; i++){
-		a = switches[i+1][1]; // get number of switches for light i
-		b = switches[i+1][2];
+		a = switches[i+1].s[1]; // get number of switches for light i
+		b = switches[i+1].s[2];
 		if (lights[i]){ // if light i is initially on (1 or TRUE)
 			x[2*i] = -1*a; // add pair (-a|-b)
 			y[2*i] = -1*b;
