@@ -13,7 +13,7 @@
 
 
 int ** initDynArr( int  );
-
+void createSatInput(int**, int*, int, int*, int*);
 
 using namespace std;
 
@@ -75,7 +75,7 @@ int main(){
       	for(j=0; j<2+1; j++){
       		inputFile >> temp;
 
-	 		Q[i][j] = 
+	 		Q[i][j] =
 	    	inputFile.ignore(1, ','); //disregard comma
 		}
 	}
@@ -97,4 +97,33 @@ else{
 
 
 return 0;
+}
+/*
+	void fuction: createSatInput
+		Inputs:
+			int** switches: (n+1)x3 array that has the numbers of the two switches connected to each switch
+			int* lights: array length n that has the initial status of each light
+			int n: number of light switches
+			int* x and y: arrays of length n*2. These will hold the resulting pairs to pass to cnf2sat
+		Result:
+			Arrays x and y contain the pairs to use as input to cnf2sat
+*/
+void createSatInput(int** switches, int* lights, int n, int* x, int* y){
+	int a, b;
+	for (int i = 0; i <n; i++){
+		a = switches[i+1][1]; // get number of switches for light i
+		b = switches[i+1][2];
+		if (lights[i]){ // if light i is initially on (1 or TRUE)
+			x[2*i] = -1*a; // add pair (-a|-b)
+			y[2*i] = -1*b;
+			x[2*i+1] = a; // add pair (a|b)
+			y[2*i+1] = b;
+		}
+		else { //otherwise, i is initially off (0 or FALSE)
+			x[2*i] = a; // add pair (a|-b)
+			y[2*i] = -1*b;
+			x[2*i+1] = -1*a; // add pair (-a|b)
+			y[2*i+1] = b;
+		}
+	}
 }
