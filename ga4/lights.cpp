@@ -150,8 +150,19 @@ else{
   }
 
     //put data into SAT2 black box
-    cout << satisfiable(test) << endl;
     //test.clear();
+
+	//if 1 its yes if its 0 return no
+	if(satisfiable(test) == 1)
+	{
+		//output yes into file
+		outputFile << "yes" << endl;
+	}
+	else if(satisfiable(test) == 0)
+	{	
+		//output no into file
+		outputFile << "no" << endl;
+	}
 
 return 0;
 }
