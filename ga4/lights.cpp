@@ -49,7 +49,7 @@ light * initDynArr( int n ){
 int main(){
 
   int i, j;
-  int *lightStatus, numSwitches, numLights;
+  int *lightStatus, numSwitches, numLights, output;
   light *Q;
   string buffer;
 
@@ -152,16 +152,19 @@ else{
     //put data into SAT2 black box
     //test.clear();
 
+  	//store output as an int
+  	output = satisfiable(test);
+
 	//if 1 its yes if its 0 return no
-	if(satisfiable(test) == 1)
+	if(output == 1)
 	{
 		//output yes into file
-		outputFile << "yes" << endl;
+		outputFile << "yes";
 	}
-	else if(satisfiable(test) == 0)
+	else if(output == 0)
 	{	
 		//output no into file
-		outputFile << "no" << endl;
+		outputFile << "no";
 	}
 
 return 0;
